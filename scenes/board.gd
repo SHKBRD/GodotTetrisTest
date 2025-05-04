@@ -54,7 +54,7 @@ func init_das(dir: int):
 	dasCounter = Lookups.get_das_delay(level)
 	print(dasCounter)
 	var chosenPiece: Piece = get_node("Pieces").get_child(0)
-	if chosenPiece.controllingPiece:
+	if chosenPiece != null and chosenPiece.controllingPiece:
 		chosenPiece.attempt_move_piece_horizontally(dir)
 
 func continue_das():
