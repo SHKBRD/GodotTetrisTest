@@ -10,14 +10,18 @@ var pieceBlocks: Node3D
 var belongBoard: Board
 var blockCollection: Array[Block]
 
-var boardPos: Vector2i = Vector2i(3, 1)
+var boardPos: Vector2i
 var blockId: int
 var rotationId: int
+
+var pieceSet: bool = false
+var controllingPiece: bool = true
 
 static func make_piece(board: Board, blockId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1)) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
+	piece.position = Vector3(initBoardPos.x, -initBoardPos.y, 0)
 	piece.blockId = blockId
 	piece.rotationId = rotationId
 	var pieceBlockLocations: Array = pieceLookup.blocks[blockId][rotationId]
@@ -52,26 +56,39 @@ func handle_board_inputs():
 		attempt_rotate_piece(-1)
 	if Input.is_action_just_pressed("input_rotate_clockwise"):
 		attempt_rotate_piece(1)
-	if Input.is_action_just_pressed("input_piece_left"):
-		attempt_move_piece_horizontally(-1)
-	if Input.is_action_just_pressed("input_piece_right"):
-		attempt_move_piece_horizontally(1)
+	#if Input.is_action_just_pressed("input_piece_left"):
+		#attempt_move_piece_horizontally(-1)
+	#if Input.is_action_just_pressed("input_piece_right"):
+		#attempt_move_piece_horizontally(1)
 	if Input.is_action_pressed("input_piece_down"):
-		attempt_move_piece_down()
+		var moved: bool = attempt_move_piece_down()
+		if not moved:
+			set_piece_to_board()
+	if Input.is_action_pressed("input_piece_fast_drop"):
+		attempt_piece_fast_drop()
+	
 
 func attempt_move_piece_horizontally(dir: int):
 	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x+dir, boardPos.y))
 	if not is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
+		
 	testPiece.queue_free()
 
-func attempt_move_piece_down() -> void:
+func attempt_move_piece_down() -> bool:
+	var success: bool = false
 	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x, boardPos.y+1))
 	if not is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
+		success = true
 	else:
-		set_piece_to_board()
+		success = false
 	testPiece.queue_free()
+	return success
+
+func attempt_piece_fast_drop() -> void:
+	while attempt_move_piece_down():
+		pass
 
 func attempt_rotate_piece(dir: int) -> void:
 	var newRotId = rotationId+dir
@@ -106,13 +123,20 @@ func attempt_rotate_piece(dir: int) -> void:
 	
 func set_piece_to_board() -> void:
 	for block in blockCollection:
-		block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
+		var setPos = block.global_position
+		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
 		block.get_parent().remove_child(block)
 		belongBoard.get_node("Blocks").add_child(block)
 		belongBoard.blockBoard[block.boardPos.y-1][block.boardPos.x] = block
+		block.global_position = setPos
 	belongBoard.get_node("Pieces").remove_child(self)
-	belongBoard.get_node("Pieces").add_child(make_piece(belongBoard, 1))
-	queue_free()
+	belongBoard.areCounter = Lookups.get_are_delay(belongBoard.level)
+	#belongBoard.get_node("Pieces").add_child(make_piece(belongBoard, 1))
+	pieceSet = true
+	controllingPiece = false
+	belongBoard.level += 1
+	
+	#queue_free()
 
 func transfer_test_piece_data(testPiece: Piece) -> void:
 	boardPos = testPiece.boardPos
@@ -126,8 +150,10 @@ func transfer_test_piece_data(testPiece: Piece) -> void:
 		pieceBlocks.add_child(n)
 
 func _process(delta: float) -> void:
-	handle_board_inputs()
+	if controllingPiece:
+		handle_board_inputs()
 	
 	
 	position = Vector3(boardPos.x, -boardPos.y, 0)
-	
+	if pieceSet:
+		queue_free()

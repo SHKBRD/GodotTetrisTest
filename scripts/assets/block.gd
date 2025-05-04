@@ -7,4 +7,5 @@ func _ready() -> void:
 	pass
 	
 func _process(delta: float) -> void:
-	pass
+	if not boardPos:
+		print("H1")
