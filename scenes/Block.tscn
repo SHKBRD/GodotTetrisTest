@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cog7i2odhyfdd"]
+
+[ext_resource type="Script" uid="uid://bnjhyrcxvbrns" path="res://scripts/assets/block.gd" id="1_01uos"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_hfsdp"]
+
+[node name="Block" type="Node3D"]
+script = ExtResource("1_01uos")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+mesh = SubResource("BoxMesh_hfsdp")

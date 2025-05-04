@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bso7vaxv8jtc4"]
+
+[ext_resource type="Script" uid="uid://dr1fe0akrfeg2" path="res://scenes/board.gd" id="1_qails"]
+[ext_resource type="PackedScene" uid="uid://7hb3foi3sxku" path="res://assets/board/board.blend" id="2_hs2ul"]
+
+[node name="Board" type="Node3D"]
+script = ExtResource("1_qails")
+
+[node name="Pieces" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Blocks" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="board" parent="." instance=ExtResource("2_hs2ul")]
