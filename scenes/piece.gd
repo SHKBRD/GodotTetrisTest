@@ -17,23 +17,36 @@ var rotationId: int
 var pieceSet: bool = false
 var controllingPiece: bool = true
 
-static func make_piece(board: Board, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1)) -> Piece:
+static func make_piece(board: Board, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1), irs = false) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
 	piece.position = Vector3(initBoardPos.x, -initBoardPos.y, 0)
 	piece.blockId = pieceId
+	if pieceId != 0 and irs:
+		if Input.is_action_pressed("input_rotate_clockwise"):
+			rotationId = 1
+		elif Input.is_action_pressed("input_rotate_counterclockwise"):
+			rotationId = pieceLookup.blockShapes[pieceId].size()-1
+		else:
+			rotationId = rotationId
+	
 	piece.rotationId = rotationId
-	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotationId]
+	
 	piece.blockCollection = []
+	
+	# internal block configurations
+	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotationId]
 	for blocki in range(4):
 		var pieceBlock: Block = blockScene.instantiate()
 		var blockPos: Vector2i = pieceBlockLocations[blocki]
 		pieceBlock.boardPos = piece.boardPos+blockPos
 		pieceBlock.position = Vector3(blockPos.x, -blockPos.y, 0)
-		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
 		piece.blockCollection.append(pieceBlock)
+		
+		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
 		piece.get_node("PieceBlocks").add_child(pieceBlock)
+	
 	return piece
 
 static func is_piece_overlapping(piece: Piece) -> bool:
@@ -41,6 +54,7 @@ static func is_piece_overlapping(piece: Piece) -> bool:
 		return false
 	for block in piece.blockCollection:
 		var boardFocPos: Vector2i = block.boardPos
+		
 		if boardFocPos.x < 0: return true
 		if boardFocPos.x >= piece.belongBoard.boardSizex: return true
 		if boardFocPos.y < 0: return true
@@ -57,10 +71,6 @@ func handle_board_inputs():
 		attempt_rotate_piece(-1)
 	if Input.is_action_just_pressed("input_rotate_clockwise"):
 		attempt_rotate_piece(1)
-	#if Input.is_action_just_pressed("input_piece_left"):
-		#attempt_move_piece_horizontally(-1)
-	#if Input.is_action_just_pressed("input_piece_right"):
-		#attempt_move_piece_horizontally(1)
 	if Input.is_action_pressed("input_piece_down"):
 		var moved: bool = attempt_move_piece_down()
 		if not moved:
@@ -104,6 +114,7 @@ func attempt_rotate_piece(dir: int) -> void:
 		testPiece.queue_free()
 		return
 	
+	# attempt wallkicks
 	if blockId != 6:
 		testPiece.queue_free()
 		testPiece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x+1, boardPos.y))

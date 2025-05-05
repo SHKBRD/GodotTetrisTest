@@ -57,7 +57,7 @@ func get_das_delay(level: int) -> int:
 
 func get_val_from_table(amnt: int, target: Array, returnVal: Array):
 	for i in range(target.size()-1, -1, -1):
-		print(target[i])
+		#print(target[i])
 		if target[i] < amnt:
 			return returnVal[i]
 	return returnVal.front()

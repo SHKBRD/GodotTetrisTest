@@ -7,6 +7,10 @@ var linesToClear: Array[int] = []
 var boardSizex: int = 10
 var boardSizey: int = 21
 
+var maxPieceIdHistory: int = 6
+var maxPieceGenerateTries: int = 6
+var pieceIdHistory: Array[int] = []
+
 var areCounter: int = -1
 var lineClearAreCounter: int = -1
 var dasCounter: int = -1
@@ -35,11 +39,41 @@ func get_full_line_inds() -> Array[int]:
 func _ready() -> void:
 	#add_child(Piece.makePiece(0))
 	block_board_init()
+	generate_next_piece(true)
 	add_piece()
 	
 
+func generate_next_piece(start: int) -> void:
+	# remove whatever nextpiece exists
+	if get_node("NextPiece").get_children() != []:
+		get_node("NextPiece").get_child(0).queue_free()
+	
+	# piece pulling algorithm
+	var genPieceId = RandomNumberGenerator.new().randi_range(0,6)
+	if start:
+		while genPieceId == 0 or genPieceId == 3 or genPieceId == 4:
+			genPieceId = RandomNumberGenerator.new().randi_range(0,6)
+	else:
+		var generateTries: int = 0
+		while genPieceId in pieceIdHistory and generateTries < maxPieceGenerateTries:
+			genPieceId = RandomNumberGenerator.new().randi_range(0,6)
+			generateTries+=1
+	
+	# piece recording
+	pieceIdHistory.append(genPieceId)
+	if pieceIdHistory.size() > maxPieceIdHistory:
+		pieceIdHistory.remove_at(0)
+	
+	# generating piece to display
+	var nextPiece: Piece = Piece.make_piece(self, genPieceId)
+	nextPiece.controllingPiece = false
+	print(pieceIdHistory)
+	get_node("NextPiece").add_child(nextPiece)
+		
 func add_piece() -> void:
-	get_node("Pieces").add_child(Piece.make_piece(self, 6))
+	var nextID: int = get_node("NextPiece").get_child(0).blockId
+	get_node("Pieces").add_child(Piece.make_piece(self, nextID, 0, Vector2i(3,1), true))
+	generate_next_piece(false)
 
 func clear_blocks_on_rows(fullLineInds) -> void:
 	for rowInd: int in fullLineInds:
@@ -82,6 +116,7 @@ func process_are_counter() -> void:
 		areCounter -= 1
 	elif areCounter == 0:
 		areCounter -= 1
+		# split behavior if locking the current piece would clear lines
 		if linesToClear.size() != 0:
 			drop_blocks_to_floor()
 			lineClearAreCounter = Lookups.get_line_clear_are_delay(level)
@@ -109,7 +144,7 @@ func process_das_inputs() -> void:
 
 func init_das(dir: int):
 	dasCounter = Lookups.get_das_delay(level)
-	print(dasCounter)
+	#print(dasCounter)
 	var chosenPiece: Piece
 	if get_node("Pieces").get_children().size() != 0:
 		chosenPiece = get_node("Pieces").get_child(0)

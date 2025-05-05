@@ -46,7 +46,7 @@ var blockShapes: Array[Array] = [
 var blockColors: Array[Color] = [
 	Color.from_rgba8(255,255,0),
 	Color.from_rgba8(0,0,255),
-	Color.from_rgba8(255,170,255),
+	Color.from_rgba8(255,170,0),
 	Color.from_rgba8(255,0,255),
 	Color.from_rgba8(0,255,0),
 	Color.from_rgba8(0,255,255),
