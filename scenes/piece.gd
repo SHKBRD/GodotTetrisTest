@@ -17,20 +17,21 @@ var rotationId: int
 var pieceSet: bool = false
 var controllingPiece: bool = true
 
-static func make_piece(board: Board, blockId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1)) -> Piece:
+static func make_piece(board: Board, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1)) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
 	piece.position = Vector3(initBoardPos.x, -initBoardPos.y, 0)
-	piece.blockId = blockId
+	piece.blockId = pieceId
 	piece.rotationId = rotationId
-	var pieceBlockLocations: Array = pieceLookup.blockShapes[blockId][rotationId]
+	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotationId]
 	piece.blockCollection = []
 	for blocki in range(4):
 		var pieceBlock: Block = blockScene.instantiate()
 		var blockPos: Vector2i = pieceBlockLocations[blocki]
 		pieceBlock.boardPos = piece.boardPos+blockPos
 		pieceBlock.position = Vector3(blockPos.x, -blockPos.y, 0)
+		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
 		piece.blockCollection.append(pieceBlock)
 		piece.get_node("PieceBlocks").add_child(pieceBlock)
 	return piece
