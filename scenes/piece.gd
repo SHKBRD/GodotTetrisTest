@@ -123,13 +123,14 @@ func attempt_rotate_piece(dir: int) -> void:
 	
 	
 func set_piece_to_board() -> void:
-	for block in blockCollection:
+	for block: Block in blockCollection:
 		var setPos = block.global_position
 		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
 		block.get_parent().remove_child(block)
 		belongBoard.get_node("Blocks").add_child(block)
 		belongBoard.blockBoard[block.boardPos.y-1][block.boardPos.x] = block
 		block.global_position = setPos
+		block.set_placed(true)
 	belongBoard.get_node("Pieces").remove_child(self)
 	belongBoard.linesToClear = belongBoard.get_full_line_inds()
 	if belongBoard.linesToClear.size() != 0:
