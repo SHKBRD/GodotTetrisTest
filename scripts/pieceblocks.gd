@@ -1,6 +1,6 @@
 extends Resource
 
-var blocks: Array[Array] = [
+var blockShapes: Array[Array] = [
 	# O
 	[
 		[Vector2i(1, 1),Vector2i(2, 1), Vector2i(1, 2), Vector2i(2, 2)]
@@ -10,26 +10,35 @@ var blocks: Array[Array] = [
 		[Vector2i(0, 1),Vector2i(1, 1), Vector2i(2, 1), Vector2i(2, 2)],
 		[Vector2i(1, 0),Vector2i(1, 1), Vector2i(0, 2), Vector2i(1, 2)],
 		[Vector2i(0, 1),Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
-		[Vector2i(1, 0),Vector2i(2, 0), Vector2i(1, 1), Vector2i(1, 2)],
+		[Vector2i(1, 0),Vector2i(2, 0), Vector2i(1, 1), Vector2i(1, 2)]
 	],
 	# L
 	[
-		
+		[Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(0, 2)],
+		[Vector2i(0, 0), Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2)],
+		[Vector2i(2, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
+		[Vector2i(1, 0), Vector2i(1, 1), Vector2i(1, 2), Vector2i(2, 2)]
 	],
 	# Z
 	[
-		
+		[Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 2), Vector2i(2, 2)],
+		[Vector2i(2, 0), Vector2i(1, 1), Vector2i(2, 1), Vector2i(1, 2)],
 	],
 	# S
 	[
-		
+		[Vector2i(1, 1), Vector2i(2, 1), Vector2i(0, 2), Vector2i(1, 2)],
+		[Vector2i(0, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 2)],
 	],
 	# T
 	[
-		
+		[Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(1, 2)],
+		[Vector2i(1, 0), Vector2i(0, 1), Vector2i(1, 1), Vector2i(1, 2)],
+		[Vector2i(1, 1), Vector2i(0, 2), Vector2i(1, 2), Vector2i(2, 2)],
+		[Vector2i(1, 0), Vector2i(1, 1), Vector2i(2, 1), Vector2i(1, 2)]
 	],
 	# I
 	[
-		
+		[Vector2i(0, 1), Vector2i(1, 1), Vector2i(2, 1), Vector2i(3, 1)],
+		[Vector2i(2, 0), Vector2i(2, 1), Vector2i(2, 2), Vector2i(2, 3)]
 	]
 ]

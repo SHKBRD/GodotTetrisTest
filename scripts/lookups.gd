@@ -40,7 +40,16 @@ const lineClearVals: Array = [
 	40, 25, 16, 12, 6
 ]
 
+# line are delay when no lines are cleared
 func get_are_delay(level: int) -> int:
+	return get_val_from_table(level, areThresh, areVals)
+
+# the initial line are delay used when a line is cleared, before pieces drop
+func get_line_are_delay(level: int) -> int:
+	return get_val_from_table(level, lineAreThresh, lineAreVals)
+
+# the following line are delay used when a line is cleared, while pieces drop
+func get_line_clear_are_delay(level: int) -> int:
 	return get_val_from_table(level, areThresh, areVals)
 	
 func get_das_delay(level: int) -> int:

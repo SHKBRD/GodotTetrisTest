@@ -3,10 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://bso7vaxv8jtc4" path="res://scenes/Board.tscn" id="1_y2bmx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_y2bmx"]
-sky_top_color = Color(0.3, 0.3, 0.3, 1)
-sky_horizon_color = Color(0.98, 0.98, 0.98, 1)
-ground_bottom_color = Color(0.23, 0.23, 0.23, 1)
-ground_horizon_color = Color(1, 1, 1, 1)
+sky_top_color = Color(0.25572, 0.000177506, 0.806612, 1)
+sky_horizon_color = Color(0.923378, 0.507528, 0, 1)
+ground_bottom_color = Color(0.170219, 0.142756, 0.11086, 1)
+ground_horizon_color = Color(0.54904, 0.266875, 0, 1)
 
 [sub_resource type="Sky" id="Sky_c1c6r"]
 sky_material = SubResource("ProceduralSkyMaterial_y2bmx")
@@ -17,7 +17,6 @@ sky = SubResource("Sky_c1c6r")
 ambient_light_energy = 0.0
 tonemap_mode = 2
 glow_enabled = true
-adjustment_enabled = true
 
 [node name="BoardPlace" type="Node3D"]
 

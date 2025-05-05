@@ -24,7 +24,7 @@ static func make_piece(board: Board, blockId: int, rotationId: int = 0, initBoar
 	piece.position = Vector3(initBoardPos.x, -initBoardPos.y, 0)
 	piece.blockId = blockId
 	piece.rotationId = rotationId
-	var pieceBlockLocations: Array = pieceLookup.blocks[blockId][rotationId]
+	var pieceBlockLocations: Array = pieceLookup.blockShapes[blockId][rotationId]
 	piece.blockCollection = []
 	for blocki in range(4):
 		var pieceBlock: Block = blockScene.instantiate()
@@ -93,8 +93,8 @@ func attempt_piece_fast_drop() -> void:
 func attempt_rotate_piece(dir: int) -> void:
 	var newRotId = rotationId+dir
 	if newRotId < 0:
-		newRotId = pieceLookup.blocks[blockId].size()-1
-	elif newRotId >= pieceLookup.blocks[blockId].size():
+		newRotId = pieceLookup.blockShapes[blockId].size()-1
+	elif newRotId >= pieceLookup.blockShapes[blockId].size():
 		newRotId = 0
 	
 	var testPiece: Piece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x, boardPos.y))
@@ -130,7 +130,12 @@ func set_piece_to_board() -> void:
 		belongBoard.blockBoard[block.boardPos.y-1][block.boardPos.x] = block
 		block.global_position = setPos
 	belongBoard.get_node("Pieces").remove_child(self)
-	belongBoard.areCounter = Lookups.get_are_delay(belongBoard.level)
+	belongBoard.linesToClear = belongBoard.get_full_line_inds()
+	if belongBoard.linesToClear.size() != 0:
+		belongBoard.clear_blocks_on_rows(belongBoard.linesToClear)
+		belongBoard.areCounter = Lookups.get_line_are_delay(belongBoard.level)
+	else:
+		belongBoard.areCounter = Lookups.get_are_delay(belongBoard.level)
 	#belongBoard.get_node("Pieces").add_child(make_piece(belongBoard, 1))
 	pieceSet = true
 	controllingPiece = false

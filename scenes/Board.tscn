@@ -7,9 +7,11 @@
 script = ExtResource("1_qails")
 
 [node name="Pieces" type="Node3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Blocks" type="Node3D" parent="."]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="board" parent="." instance=ExtResource("2_hs2ul")]
