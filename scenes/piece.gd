@@ -7,7 +7,7 @@ static var pieceLookup: Resource = preload("res://scripts/pieceblocks.tres")
 
 var pieceBlocks: Node3D
 
-var belongBoard: Board
+var belongBoard: PlayBoard
 var blockCollection: Array[Block]
 
 var boardPos: Vector2i
@@ -17,7 +17,7 @@ var rotationId: int
 var pieceSet: bool = false
 var controllingPiece: bool = true
 
-static func make_piece(board: Board, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1), irs = false) -> Piece:
+static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1), irs = false) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
@@ -49,39 +49,13 @@ static func make_piece(board: Board, pieceId: int, rotationId: int = 0, initBoar
 	
 	return piece
 
-static func is_piece_overlapping(piece: Piece) -> bool:
-	if piece.belongBoard == null:
-		return false
-	for block in piece.blockCollection:
-		var boardFocPos: Vector2i = block.boardPos
-		
-		if boardFocPos.x < 0: return true
-		if boardFocPos.x >= piece.belongBoard.boardSizex: return true
-		if boardFocPos.y < 0: return true
-		if boardFocPos.y > piece.belongBoard.boardSizey: return true
-		if piece.belongBoard.blockBoard[boardFocPos.y-1][boardFocPos.x] != null:
-			return true
-	return false
-
 func _ready() -> void:
 	pieceBlocks = get_node("PieceBlocks")
-
-func handle_board_inputs():
-	if Input.is_action_just_pressed("input_rotate_counterclockwise"):
-		attempt_rotate_piece(-1)
-	if Input.is_action_just_pressed("input_rotate_clockwise"):
-		attempt_rotate_piece(1)
-	if Input.is_action_pressed("input_piece_down"):
-		var moved: bool = attempt_move_piece_down()
-		if not moved:
-			set_piece_to_board()
-	if Input.is_action_pressed("input_piece_fast_drop"):
-		attempt_piece_fast_drop()
 	
 
 func attempt_move_piece_horizontally(dir: int):
 	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x+dir, boardPos.y))
-	if not is_piece_overlapping(testPiece):
+	if not belongBoard.is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
 		
 	testPiece.queue_free()
@@ -89,7 +63,7 @@ func attempt_move_piece_horizontally(dir: int):
 func attempt_move_piece_down() -> bool:
 	var success: bool = false
 	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x, boardPos.y+1))
-	if not is_piece_overlapping(testPiece):
+	if not belongBoard.is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
 		success = true
 	else:
@@ -109,7 +83,7 @@ func attempt_rotate_piece(dir: int) -> void:
 		newRotId = 0
 	
 	var testPiece: Piece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x, boardPos.y))
-	if not is_piece_overlapping(testPiece):
+	if not belongBoard.is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
 		testPiece.queue_free()
 		return
@@ -118,43 +92,21 @@ func attempt_rotate_piece(dir: int) -> void:
 	if blockId != 6:
 		testPiece.queue_free()
 		testPiece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x+1, boardPos.y))
-		if not is_piece_overlapping(testPiece):
+		if not belongBoard.is_piece_overlapping(testPiece):
 			transfer_test_piece_data(testPiece)
 			testPiece.queue_free()
 			return
 		
 		testPiece.queue_free()
 		testPiece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x-1, boardPos.y))
-		if not is_piece_overlapping(testPiece):
+		if not belongBoard.is_piece_overlapping(testPiece):
 			transfer_test_piece_data(testPiece)
 			testPiece.queue_free()
 			return
 	
 	testPiece.queue_free()
 	
-	
-func set_piece_to_board() -> void:
-	for block: Block in blockCollection:
-		var setPos = block.global_position
-		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
-		block.get_parent().remove_child(block)
-		belongBoard.get_node("Blocks").add_child(block)
-		belongBoard.blockBoard[block.boardPos.y-1][block.boardPos.x] = block
-		block.global_position = setPos
-		block.set_placed(true)
-	belongBoard.get_node("Pieces").remove_child(self)
-	belongBoard.linesToClear = belongBoard.get_full_line_inds()
-	if belongBoard.linesToClear.size() != 0:
-		belongBoard.clear_blocks_on_rows(belongBoard.linesToClear)
-		belongBoard.areCounter = Lookups.get_line_are_delay(belongBoard.level)
-	else:
-		belongBoard.areCounter = Lookups.get_are_delay(belongBoard.level)
-	#belongBoard.get_node("Pieces").add_child(make_piece(belongBoard, 1))
-	pieceSet = true
-	controllingPiece = false
-	belongBoard.level += 1
-	
-	#queue_free()
+
 
 func transfer_test_piece_data(testPiece: Piece) -> void:
 	boardPos = testPiece.boardPos
@@ -168,10 +120,6 @@ func transfer_test_piece_data(testPiece: Piece) -> void:
 		pieceBlocks.add_child(n)
 
 func _process(delta: float) -> void:
-	if controllingPiece:
-		handle_board_inputs()
-	
-	
 	position = Vector3(boardPos.x, -boardPos.y, 0)
 	if pieceSet:
 		queue_free()
