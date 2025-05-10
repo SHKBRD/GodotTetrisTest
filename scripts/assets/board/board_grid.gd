@@ -73,8 +73,7 @@ func drop_blocks_to_floor() -> void:
 		for coli: int in blockBoard[rowi].size():
 			var referenceBlock: Block = blockBoard[rowi][coli]
 			if blockBoard[rowi][coli] != null:
-				referenceBlock.boardPos = Vector2i(coli, rowi)
-				referenceBlock.position = Vector3(coli, -rowi-1, 0)
+				referenceBlock.boardPos = Vector2i(coli, rowi+1)
 
 func set_piece_to_board(piece: Piece) -> void:
 	for block: Block in piece.blockCollection:

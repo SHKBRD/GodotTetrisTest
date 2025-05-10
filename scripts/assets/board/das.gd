@@ -22,7 +22,7 @@ func process_das_inputs() -> void:
 func handle_board_inputs():
 	var focusPiece: Piece = %BoardGameState.activePiece
 	if focusPiece and focusPiece.controllingPiece:
-		if Input.is_action_pressed("input_piece_down") and not Input.is_action_pressed("input_piece_fast_drop"):
+		if Input.is_action_pressed("input_piece_down"):
 			var moved: bool = focusPiece.attempt_move_piece_down()
 			if not moved:
 				%BoardGrid.set_piece_to_board(focusPiece)
