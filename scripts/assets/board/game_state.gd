@@ -30,7 +30,7 @@ func board_game_state_init() -> void:
 	areCounter = -1
 	lineClearAreCounter = -1
 	lock_delay = -1
-	level = 500
+	level = 0
 	section = int(level/100)
 	generate_next_piece(true)
 	add_piece()
@@ -144,6 +144,8 @@ func generate_next_piece(start: int) -> void:
 func add_piece() -> void:
 	var nextID: int = %NextPiece.get_child(0).blockId
 	var newPiece: Piece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,2), true)
+	if newPiece.belongBoard.is_piece_overlapping(newPiece):
+		newPiece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,2), false)
 	%Pieces.add_child(newPiece)
 	activePiece = newPiece
 	gravityProgress = 0
