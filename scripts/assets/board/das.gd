@@ -24,6 +24,7 @@ func handle_board_inputs() -> void:
 			var moved: bool = focusPiece.attempt_move_piece_down()
 			if not moved:
 				%BoardGrid.set_piece_to_board(focusPiece)
+				focusPiece.queue_free()
 		if focusPiece == null or not focusPiece.controllingPiece:
 			return
 		if Input.is_action_just_pressed("input_rotate_counterclockwise"):

@@ -84,7 +84,8 @@ func set_piece_to_board(piece: Piece) -> void:
 		%Blocks.add_child(block)
 		var checkBlock: Block = blockBoard[block.boardPos.y-1][block.boardPos.x]
 		if checkBlock != null:
-			checkBlock.queue_free()
+			checkBlock.get_parent().remove_child(checkBlock)
+			checkBlock.free()
 		blockBoard[block.boardPos.y-1][block.boardPos.x] = block
 		block.global_position = setPos
 		block.set_placed(true)
@@ -103,6 +104,7 @@ func set_piece_to_board(piece: Piece) -> void:
 	%BoardGameState.increment_level(false)
 	%BoardGameState.activePiece = null
 	piece.get_parent().remove_child(piece)
+	piece.queue_free()
 	
 	#queue_free()
 

@@ -2,6 +2,7 @@ extends Node
 class_name BoardGameState
 
 signal section_elevate()
+signal game_over_init()
 
 const maxPieceIdHistory: int = 6
 const maxPieceGenerateTries: int = 6
@@ -31,6 +32,8 @@ func board_game_state_init() -> void:
 	lock_delay = -1
 	level = 0
 	section = int(level/100.0)
+	if activePiece != null:
+		activePiece.queue_free()
 	generate_next_piece(true)
 	add_piece()
 
@@ -146,7 +149,12 @@ func add_piece() -> void:
 	var nextID: int = %NextPiece.get_child(0).blockId
 	var newPiece: Piece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,2), true)
 	if newPiece.belongBoard.is_piece_overlapping(newPiece):
+		newPiece.queue_free()
 		newPiece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,2), false)
+		if newPiece.belongBoard.is_piece_overlapping(newPiece):
+			newPiece.queue_free()
+			game_over_init.emit()
+			return
 	%Pieces.add_child(newPiece)
 	activePiece = newPiece
 	gravityProgress = 0

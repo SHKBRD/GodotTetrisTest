@@ -16,6 +16,7 @@ func init_play() -> void:
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("reset_board"):
+		print_orphan_nodes()
 		board_reset()
 		init_play()
 
@@ -28,6 +29,9 @@ func board_reset() -> void:
 		child.queue_free()
 	for child: Piece in %NextPiece.get_children():
 		%NextPiece.remove_child(child)
+		child.queue_free()
+	for child: Node3D in %Particles.get_children():
+		%Particles.remove_child(child)
 		child.queue_free()
 	%BoardGameState.activePiece = null
 	
