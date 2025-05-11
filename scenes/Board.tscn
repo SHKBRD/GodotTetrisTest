@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://bso7vaxv8jtc4"]
+[gd_scene load_steps=10 format=3 uid="uid://bso7vaxv8jtc4"]
 
 [ext_resource type="Script" uid="uid://dr1fe0akrfeg2" path="res://scenes/board.gd" id="1_qails"]
 [ext_resource type="Script" uid="uid://dk5kd7u4k22g6" path="res://scripts/assets/board/das.gd" id="2_66b1s"]
 [ext_resource type="PackedScene" uid="uid://7hb3foi3sxku" path="res://assets/board/board.blend" id="2_hs2ul"]
 [ext_resource type="Script" uid="uid://c6hcgdj10cpnj" path="res://scripts/assets/board/game_state.gd" id="3_w6jgk"]
 [ext_resource type="Script" uid="uid://drw6eexkfbhp2" path="res://scripts/assets/board/board_grid.gd" id="4_xdl3i"]
+[ext_resource type="PackedScene" uid="uid://bxshngvavgqi4" path="res://scenes/LevelCounter.tscn" id="6_wlyqt"]
+[ext_resource type="Shader" uid="uid://bhplnm0tew7y5" path="res://shaders/board_backing.gdshader" id="7_kqf1l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hljw5"]
+render_priority = 0
+shader = ExtResource("7_kqf1l")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wxh2q"]
+material = SubResource("ShaderMaterial_hljw5")
+size = Vector2(10, 20)
 
 [node name="Board" type="Node3D"]
 script = ExtResource("1_qails")
@@ -37,6 +47,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="NextPiece" type="Node3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+
+[node name="LevelCounter" parent="." instance=ExtResource("6_wlyqt")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0353, -17.937, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, -10, -0.5)
+mesh = SubResource("PlaneMesh_wxh2q")
 
 [connection signal="init_play" from="." to="Subs/Input" method="_on_board_init_play"]
 [connection signal="init_play" from="." to="Subs/BoardGameState" method="_on_board_init_play"]

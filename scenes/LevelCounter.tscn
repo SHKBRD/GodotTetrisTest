@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxshngvavgqi4"]
+
+[ext_resource type="Script" uid="uid://c8ryif6vd0qed" path="res://scripts/assets/level_counter.gd/level_counter.gd" id="1_7ms8k"]
+
+[node name="LevelCounter" type="Node3D"]
+script = ExtResource("1_7ms8k")
+
+[node name="Level" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+pixel_size = 0.01
+text = "000"
+font_size = 66
+
+[node name="Section" type="Label3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+pixel_size = 0.01
+text = "000"
+font_size = 66

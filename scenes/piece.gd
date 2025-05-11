@@ -45,6 +45,7 @@ static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, init
 		piece.blockCollection.append(pieceBlock)
 		
 		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
+		pieceBlock.set_block_color_id(pieceId)
 		piece.get_node("PieceBlocks").add_child(pieceBlock)
 	
 	return piece

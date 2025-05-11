@@ -2,6 +2,7 @@ extends Node
 class_name BoardGameState
 
 signal drop_blocks()
+signal section_elevate()
 
 const maxPieceIdHistory: int = 6
 const maxPieceGenerateTries: int = 6
@@ -12,7 +13,9 @@ var activePiece: Piece
 var areCounter: int = -1
 var lineClearAreCounter: int = -1
 
+var section: int = 0
 var level: int = 0
+var maxLevel: int = 999
 
 func _ready() -> void:
 	pass
@@ -25,12 +28,23 @@ func _on_board_init_play() -> void:
 	areCounter = -1
 	lineClearAreCounter = -1
 	level = 0
+	section = 0
 	generate_next_piece(true)
 	add_piece()
 
+func increment_level(clear: bool) -> void:
+	if level % 100 == 99 or level == maxLevel-1:
+		if clear:
+			level += 1
+			section += 1
+			section_elevate.emit()
+	else:
+		level += 1
+
 func process_counters() -> void:
 	process_are_counter()
-	process_line_clear_are_counter()	
+	process_line_clear_are_counter()
+	%LevelCounter.update_level_counter(level, section)
 
 func set_are_line_delay() -> void:
 	areCounter = Lookups.get_line_are_delay(level)

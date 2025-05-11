@@ -1,8 +1,10 @@
 shader_type spatial;
 
-//render_mode unshaded;
+render_mode unshaded;
 
+uniform sampler2D albedo : filter_nearest_mipmap_anisotropic;
 instance uniform vec4 blockColor : source_color = vec4(0.4, 0.4, 0.4, 1.0);
+instance uniform int blockColorId;
 instance uniform bool placed;
 
 void vertex() {
@@ -10,9 +12,13 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = blockColor.xyz;
+	vec2 modUV = mod(UV/vec2(1.3333333,2.0), 0.25);
+	float xColorOff = mod(float(blockColorId), 4.0)/4.0;
+	float yColorOff = floor(float(blockColorId)/4.0)/4.0;
+	ALBEDO.xyz = texture(albedo, modUV + vec2(xColorOff, yColorOff)).xyz;
+	//ALBEDO *= blockColor.xyz;
 	if (placed) {
-		ALBEDO /= 4.0;
+		ALBEDO /= 2.0;
 	}
 }
 

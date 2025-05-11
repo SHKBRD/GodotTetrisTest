@@ -1,8 +1,20 @@
 extends Node3D
 class_name Block
 
+var colorIdToTextureInd: Dictionary[int, int] = {
+	-1: 0,
+	0: 3,
+	1: 6,
+	2: 2,
+	3: 7,
+	4: 4,
+	5: 5,
+	6: 1
+}
+
 var boardPos: Vector2i
 var blockColor: Color
+var blockColorId: int
 var placed: bool = false
 
 func _ready() -> void:
@@ -11,6 +23,10 @@ func _ready() -> void:
 func set_block_color(color: Color) -> void:
 	blockColor = color
 	%BlockMesh.set_instance_shader_parameter("blockColor", color)
+
+func set_block_color_id(colorId: int) -> void:
+	blockColorId = colorId
+	%BlockMesh.set_instance_shader_parameter("blockColorId", colorIdToTextureInd[blockColorId])
 
 func set_placed(placedState: bool) -> void:
 	self.placed = placedState

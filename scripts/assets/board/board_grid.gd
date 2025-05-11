@@ -50,6 +50,7 @@ func clear_blocks_on_rows(fullLineInds) -> void:
 	for rowInd: int in fullLineInds:
 		for block: Block in blockBoard[rowInd]:
 			%Blocks.remove_child(block)
+		%BoardGameState.increment_level(true)
 
 # deals with the position of the blocks after the initial ARE of putting down the line after a line clear
 func drop_blocks_to_floor() -> void:
@@ -97,7 +98,7 @@ func set_piece_to_board(piece: Piece) -> void:
 	#belongBoard.get_node("Pieces").add_child(make_piece(belongBoard, 1))
 	piece.pieceSet = true
 	piece.controllingPiece = false
-	%BoardGameState.level += 1
+	%BoardGameState.increment_level(false)
 	%BoardGameState.activePiece = null
 	piece.get_parent().remove_child(piece)
 	
