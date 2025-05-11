@@ -3,7 +3,6 @@ shader_type spatial;
 render_mode unshaded;
 
 uniform sampler2D albedo : filter_nearest_mipmap_anisotropic;
-instance uniform vec4 blockColor : source_color = vec4(0.4, 0.4, 0.4, 1.0);
 instance uniform int blockColorId;
 instance uniform bool placed;
 instance uniform float lockProgress;

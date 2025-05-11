@@ -1,6 +1,7 @@
 extends Resource
+class_name PieceLookups
 
-var blockShapes: Array[Array] = [
+static var blockShapes: Array[Array] = [
 	# O
 	[
 		[Vector2i(1, 1),Vector2i(2, 1), Vector2i(1, 2), Vector2i(2, 2)]
@@ -43,7 +44,7 @@ var blockShapes: Array[Array] = [
 	]
 ]
 
-var blockColors: Array[Color] = [
+static var blockColors: Array[Color] = [
 	Color.from_rgba8(255,255,0),
 	Color.from_rgba8(0,0,255),
 	Color.from_rgba8(255,170,0),

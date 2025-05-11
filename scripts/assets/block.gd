@@ -1,7 +1,7 @@
 extends Node3D
 class_name Block
 
-var colorIdToTextureInd: Dictionary[int, int] = {
+static var colorIdToTextureInd: Dictionary[int, int] = {
 	-1: 0,
 	0: 3,
 	1: 6,

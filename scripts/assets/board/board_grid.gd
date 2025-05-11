@@ -1,6 +1,8 @@
 extends Node
 class_name BoardGrid
 
+signal send_explosion(pos: Vector2, color: Color)
+
 var blockBoard : Array[Array]
 var linesToClear: Array[int] = []
 
@@ -47,6 +49,7 @@ func clear_blocks_on_rows(fullLineInds: Array) -> void:
 	for rowInd: int in fullLineInds:
 		for block: Block in blockBoard[rowInd]:
 			%Blocks.remove_child(block)
+			%BoardParticles.add_explosion(block.boardPos, PieceLookups.blockColors[block.blockColorId])
 		%BoardGameState.increment_level(true)
 
 # deals with the position of the blocks after the initial ARE of putting down the line after a line clear
@@ -79,6 +82,9 @@ func set_piece_to_board(piece: Piece) -> void:
 		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
 		block.get_parent().remove_child(block)
 		%Blocks.add_child(block)
+		var checkBlock: Block = blockBoard[block.boardPos.y-1][block.boardPos.x]
+		if checkBlock != null:
+			checkBlock.queue_free()
 		blockBoard[block.boardPos.y-1][block.boardPos.x] = block
 		block.global_position = setPos
 		block.set_placed(true)

@@ -3,8 +3,9 @@ class_name PlayBoard
 
 	
 func _ready() -> void:
+	pass
 	#add_child(Piece.makePiece(0))
-	init_play()
+	#init_play()
 	#block_board_init()
 	#generate_next_piece(true)
 	#add_piece()
