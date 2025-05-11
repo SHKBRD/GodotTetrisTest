@@ -5,18 +5,15 @@ var blockBoard : Array[Array]
 var linesToClear: Array[int] = []
 
 var boardSizex: int = 10
-var boardSizey: int = 21
+var boardSizey: int = 22
 
 func _ready() -> void:
 	pass
 
-func _on_board_init_play() -> void:
-	block_board_init()
-
 func is_piece_overlapping(piece: Piece) -> bool:
 	if piece.belongBoard == null:
 		return false
-	for block in piece.blockCollection:
+	for block: Block in piece.blockCollection:
 		var boardFocPos: Vector2i = block.boardPos
 		
 		if boardFocPos.x < 0: return true
@@ -29,9 +26,9 @@ func is_piece_overlapping(piece: Piece) -> bool:
 
 func block_board_init() -> void:
 	blockBoard = []
-	for rowi in range(boardSizey):
-		var blockRow = []
-		for coli in range(boardSizex):
+	for rowi: int in range(boardSizey):
+		var blockRow: Array = []
+		for coli: int in range(boardSizex):
 			blockRow.append(null)
 		blockBoard.append(blockRow)
 
@@ -46,7 +43,7 @@ func get_full_line_inds() -> Array[int]:
 		if isFull: fullLineInds.append(boardRowInd)
 	return fullLineInds
 
-func clear_blocks_on_rows(fullLineInds) -> void:
+func clear_blocks_on_rows(fullLineInds: Array) -> void:
 	for rowInd: int in fullLineInds:
 		for block: Block in blockBoard[rowInd]:
 			%Blocks.remove_child(block)
@@ -63,9 +60,9 @@ func drop_blocks_to_floor() -> void:
 		rowsToAdd+=1
 	
 	# add rows at the top
-	for row in rowsToAdd:
+	for row: int in rowsToAdd:
 		var newEmptyBlockRow: Array[Block] = []
-		for col in boardSizex:
+		for col: int in boardSizex:
 			newEmptyBlockRow.append(null)
 		blockBoard.insert(0,newEmptyBlockRow)
 	
@@ -78,7 +75,7 @@ func drop_blocks_to_floor() -> void:
 
 func set_piece_to_board(piece: Piece) -> void:
 	for block: Block in piece.blockCollection:
-		var setPos = block.global_position
+		var setPos: Vector3 = block.global_position
 		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
 		block.get_parent().remove_child(block)
 		%Blocks.add_child(block)

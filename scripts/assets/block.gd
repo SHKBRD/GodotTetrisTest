@@ -32,6 +32,9 @@ func set_placed(placedState: bool) -> void:
 	self.placed = placedState
 	%BlockMesh.set_instance_shader_parameter("placed", placedState)
 
+func set_lock_progress(lockProgress: float) -> void:
+	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
+
 func move_to_board_pos() -> void:
 	position = Vector3(boardPos.x, -boardPos.y, 0)
 

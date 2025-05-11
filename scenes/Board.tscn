@@ -22,31 +22,31 @@ script = ExtResource("1_qails")
 [node name="Subs" type="Node" parent="."]
 unique_name_in_owner = true
 
-[node name="Input" type="Node" parent="Subs"]
+[node name="BoardGrid" type="Node" parent="Subs"]
 unique_name_in_owner = true
-script = ExtResource("2_66b1s")
+script = ExtResource("4_xdl3i")
 
 [node name="BoardGameState" type="Node" parent="Subs"]
 unique_name_in_owner = true
 script = ExtResource("3_w6jgk")
 
-[node name="BoardGrid" type="Node" parent="Subs"]
+[node name="Input" type="Node" parent="Subs"]
 unique_name_in_owner = true
-script = ExtResource("4_xdl3i")
+script = ExtResource("2_66b1s")
 
 [node name="Pieces" type="Node3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="Blocks" type="Node3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="board" parent="." instance=ExtResource("2_hs2ul")]
 
 [node name="NextPiece" type="Node3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.5, 0)
 
 [node name="LevelCounter" parent="." instance=ExtResource("6_wlyqt")]
 unique_name_in_owner = true
@@ -55,7 +55,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.0353, -17.937, 0)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, -10, -0.5)
 mesh = SubResource("PlaneMesh_wxh2q")
-
-[connection signal="init_play" from="." to="Subs/Input" method="_on_board_init_play"]
-[connection signal="init_play" from="." to="Subs/BoardGameState" method="_on_board_init_play"]
-[connection signal="init_play" from="." to="Subs/BoardGrid" method="_on_board_init_play"]

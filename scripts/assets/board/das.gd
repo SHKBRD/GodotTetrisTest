@@ -5,7 +5,7 @@ signal update_das(count: int)
 
 var dasCounter: int = -1
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	process_das_inputs()
 	handle_board_inputs()
 
@@ -19,7 +19,7 @@ func process_das_inputs() -> void:
 	if Input.is_action_pressed("input_piece_right"):
 		continue_das()
 
-func handle_board_inputs():
+func handle_board_inputs() -> void:
 	var focusPiece: Piece = %BoardGameState.activePiece
 	if focusPiece and focusPiece.controllingPiece:
 		if Input.is_action_pressed("input_piece_down"):
@@ -37,7 +37,7 @@ func handle_board_inputs():
 		
 		
 
-func init_das(dir: int):
+func init_das(dir: int) -> void:
 	dasCounter = Lookups.get_das_delay(%Subs.get_node("BoardGameState").level)
 	#print(dasCounter)
 	var chosenPiece: Piece
@@ -48,7 +48,7 @@ func init_das(dir: int):
 	if chosenPiece != null and chosenPiece.controllingPiece:
 		chosenPiece.attempt_move_piece_horizontally(dir)
 
-func continue_das():
+func continue_das() -> void:
 	var chosenPiece: Piece
 	if %Pieces.get_children().size() != 0:
 		chosenPiece = %Pieces.get_child(0)

@@ -6,6 +6,7 @@ uniform sampler2D albedo : filter_nearest_mipmap_anisotropic;
 instance uniform vec4 blockColor : source_color = vec4(0.4, 0.4, 0.4, 1.0);
 instance uniform int blockColorId;
 instance uniform bool placed;
+instance uniform float lockProgress;
 
 void vertex() {
 	// Called for every vertex the material is visible on.
@@ -19,6 +20,8 @@ void fragment() {
 	//ALBEDO *= blockColor.xyz;
 	if (placed) {
 		ALBEDO /= 2.0;
+	} else {
+		ALBEDO /= (1.0 + lockProgress);
 	}
 }
 

@@ -17,7 +17,7 @@ var rotationId: int
 var pieceSet: bool = false
 var controllingPiece: bool = true
 
-static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,1), irs = false) -> Piece:
+static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,2), irs: bool = false) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
@@ -37,7 +37,7 @@ static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, init
 	
 	# internal block configurations
 	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotationId]
-	for blocki in range(4):
+	for blocki: int in range(4):
 		var pieceBlock: Block = blockScene.instantiate()
 		var blockPos: Vector2i = pieceBlockLocations[blocki]
 		pieceBlock.boardPos = piece.boardPos+blockPos
@@ -52,9 +52,18 @@ static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, init
 
 func _ready() -> void:
 	pieceBlocks = get_node("PieceBlocks")
-	
 
-func attempt_move_piece_horizontally(dir: int):
+func can_move_down() -> bool:
+	var success: bool = false
+	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x, boardPos.y+1))
+	if not belongBoard.is_piece_overlapping(testPiece):
+		success = true
+	else:
+		success = false
+	testPiece.queue_free()
+	return success
+
+func attempt_move_piece_horizontally(dir: int) -> void:
 	var testPiece: Piece = make_piece(belongBoard, blockId, rotationId, Vector2i(boardPos.x+dir, boardPos.y))
 	if not belongBoard.is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
@@ -77,7 +86,7 @@ func attempt_piece_fast_drop() -> void:
 		pass
 
 func attempt_rotate_piece(dir: int) -> void:
-	var newRotId = rotationId+dir
+	var newRotId: int = rotationId+dir
 	if newRotId < 0:
 		newRotId = pieceLookup.blockShapes[blockId].size()-1
 	elif newRotId >= pieceLookup.blockShapes[blockId].size():
@@ -113,10 +122,11 @@ func transfer_test_piece_data(testPiece: Piece) -> void:
 	boardPos = testPiece.boardPos
 	rotationId = testPiece.rotationId
 	blockCollection = testPiece.blockCollection
-	for n in pieceBlocks.get_children():
-		get_node("PieceBlocks").remove_child(n)
-		n.queue_free()
-	for n in testPiece.blockCollection:
+	if pieceBlocks:
+		for n: Block in pieceBlocks.get_children():
+			get_node("PieceBlocks").remove_child(n)
+			n.queue_free()
+	for n: Block in testPiece.blockCollection:
 		testPiece.get_node("PieceBlocks").remove_child(n)
 		pieceBlocks.add_child(n)
 

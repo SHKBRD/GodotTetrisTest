@@ -11,7 +11,9 @@ var pieceIdHistory: Array[int] = []
 var activePiece: Piece
 
 var areCounter: int = -1
+var lock_delay: int = -1
 var lineClearAreCounter: int = -1
+var gravityProgress: int = 0
 
 var section: int = 0
 var level: int = 0
@@ -23,12 +25,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	process_counters()
 
-func _on_board_init_play() -> void:
+func board_game_state_init() -> void:
 	pieceIdHistory = []
 	areCounter = -1
 	lineClearAreCounter = -1
-	level = 0
-	section = 0
+	lock_delay = -1
+	level = 500
+	section = int(level/100)
 	generate_next_piece(true)
 	add_piece()
 
@@ -44,6 +47,8 @@ func increment_level(clear: bool) -> void:
 func process_counters() -> void:
 	process_are_counter()
 	process_line_clear_are_counter()
+	process_gravity()
+	process_lock_delay()
 	%LevelCounter.update_level_counter(level, section)
 
 func set_are_line_delay() -> void:
@@ -67,7 +72,7 @@ func process_are_counter() -> void:
 			add_piece()
 
 
-func process_line_clear_are_counter()	:
+func process_line_clear_are_counter() -> void:
 	if lineClearAreCounter == -1:
 		pass
 	elif lineClearAreCounter > 0:
@@ -77,13 +82,45 @@ func process_line_clear_are_counter()	:
 		add_piece()
 
 
+func process_gravity() -> void:
+	if activePiece != null:
+		gravityProgress += Lookups.get_gravity(level)
+		while gravityProgress/256 >= 1:
+			if not activePiece.attempt_move_piece_down():
+				gravityProgress = 0
+				break
+			else:
+				lock_delay = -1
+			gravityProgress-=256
+	
+		# updating position to make sure first frame isn't always the default position
+		activePiece.position = Vector3(activePiece.boardPos.x, -activePiece.boardPos.y, 0)
+
+func process_lock_delay() -> void:
+	if activePiece:
+		if not activePiece.can_move_down():
+			if lock_delay == -1:
+				lock_delay = Lookups.get_lock_delay(level)
+			if lock_delay == 0:
+				%BoardGrid.set_piece_to_board(activePiece)
+				lock_delay = -1
+			else:
+				lock_delay -= 1
+		else:
+			lock_delay = -1
+		if activePiece:
+			var prog: float = 1-(max(lock_delay, 0.0)/float(Lookups.get_lock_delay(level)))
+			#print(prog)
+			for block: Block in activePiece.blockCollection:
+				block.set_lock_progress(prog)
+
 func generate_next_piece(start: int) -> void:
 	# remove whatever nextpiece exists
 	if %NextPiece.get_children() != []:
 		%NextPiece.get_child(0).queue_free()
 	
 	# piece pulling algorithm
-	var genPieceId = RandomNumberGenerator.new().randi_range(0,6)
+	var genPieceId: int = RandomNumberGenerator.new().randi_range(0,6)
 	if start:
 		while genPieceId == 0 or genPieceId == 3 or genPieceId == 4:
 			genPieceId = RandomNumberGenerator.new().randi_range(0,6)
@@ -106,7 +143,9 @@ func generate_next_piece(start: int) -> void:
 	
 func add_piece() -> void:
 	var nextID: int = %NextPiece.get_child(0).blockId
-	var newPiece: Piece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,1), true)
+	var newPiece: Piece = Piece.make_piece(%Subs.get_parent(), nextID, 0, Vector2i(3,2), true)
 	%Pieces.add_child(newPiece)
 	activePiece = newPiece
+	gravityProgress = 0
 	generate_next_piece(false)
+	process_gravity()
