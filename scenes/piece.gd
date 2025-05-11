@@ -17,7 +17,7 @@ var rotationId: int
 var pieceSet: bool = false
 var controllingPiece: bool = true
 
-static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, initBoardPos: Vector2i = Vector2i(3,2), irs: bool = false) -> Piece:
+static func make_piece(board: PlayBoard, pieceId: int, rotId: int = 0, initBoardPos: Vector2i = Vector2i(3,2), irs: bool = false) -> Piece:
 	var piece: Piece = pieceScene.instantiate()
 	piece.belongBoard = board
 	piece.boardPos = initBoardPos
@@ -25,18 +25,18 @@ static func make_piece(board: PlayBoard, pieceId: int, rotationId: int = 0, init
 	piece.blockId = pieceId
 	if pieceId != 0 and irs:
 		if Input.is_action_pressed("input_rotate_clockwise"):
-			rotationId = 1
+			rotId = 1
 		elif Input.is_action_pressed("input_rotate_counterclockwise"):
-			rotationId = pieceLookup.blockShapes[pieceId].size()-1
+			rotId = pieceLookup.blockShapes[pieceId].size()-1
 		else:
-			rotationId = rotationId
+			rotId = rotId
 	
-	piece.rotationId = rotationId
+	piece.rotationId = rotId
 	
 	piece.blockCollection = []
 	
 	# internal block configurations
-	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotationId]
+	var pieceBlockLocations: Array = pieceLookup.blockShapes[pieceId][rotId]
 	for blocki: int in range(4):
 		var pieceBlock: Block = blockScene.instantiate()
 		var blockPos: Vector2i = pieceBlockLocations[blocki]
@@ -92,6 +92,11 @@ func attempt_rotate_piece(dir: int) -> void:
 	elif newRotId >= pieceLookup.blockShapes[blockId].size():
 		newRotId = 0
 	
+	if blockId in [1, 2, 5] and rotationId % 2 == 0:
+		if not belongBoard.special_rotation_check(boardPos):
+			return
+		
+	
 	var testPiece: Piece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x, boardPos.y))
 	if not belongBoard.is_piece_overlapping(testPiece):
 		transfer_test_piece_data(testPiece)
@@ -130,7 +135,7 @@ func transfer_test_piece_data(testPiece: Piece) -> void:
 		testPiece.get_node("PieceBlocks").remove_child(n)
 		pieceBlocks.add_child(n)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	position = Vector3(boardPos.x, -boardPos.y, 0)
 	if pieceSet:
 		queue_free()

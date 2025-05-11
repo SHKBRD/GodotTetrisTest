@@ -10,11 +10,11 @@ unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 pixel_size = 0.01
 text = "000"
-font_size = 66
+font_size = 100
 
 [node name="Section" type="Label3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 pixel_size = 0.01
 text = "000"
-font_size = 66
+font_size = 100

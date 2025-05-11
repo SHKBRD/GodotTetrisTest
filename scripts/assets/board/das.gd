@@ -1,11 +1,9 @@
 extends Node
 class_name BoardInput
 
-signal update_das(count: int)
-
 var dasCounter: int = -1
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	process_das_inputs()
 	handle_board_inputs()
 

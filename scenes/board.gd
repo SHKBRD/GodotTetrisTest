@@ -14,7 +14,7 @@ func init_play() -> void:
 	%BoardGrid.block_board_init()
 	%BoardGameState.board_game_state_init()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("reset_board"):
 		board_reset()
 		init_play()
@@ -35,3 +35,6 @@ func board_reset() -> void:
 # easy access methods
 func is_piece_overlapping(piece: Piece) -> bool:
 	return %BoardGrid.is_piece_overlapping(piece)
+
+func special_rotation_check(location: Vector2i) -> bool:
+	return %BoardGrid.special_rotation_check(location)

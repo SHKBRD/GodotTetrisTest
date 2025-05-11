@@ -1,7 +1,6 @@
 extends Node
 class_name BoardGameState
 
-signal drop_blocks()
 signal section_elevate()
 
 const maxPieceIdHistory: int = 6
@@ -22,7 +21,7 @@ var maxLevel: int = 999
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	process_counters()
 
 func board_game_state_init() -> void:
@@ -31,7 +30,7 @@ func board_game_state_init() -> void:
 	lineClearAreCounter = -1
 	lock_delay = -1
 	level = 0
-	section = int(level/100)
+	section = int(level/100.0)
 	generate_next_piece(true)
 	add_piece()
 
@@ -85,7 +84,7 @@ func process_line_clear_are_counter() -> void:
 func process_gravity() -> void:
 	if activePiece != null:
 		gravityProgress += Lookups.get_gravity(level)
-		while gravityProgress/256 >= 1:
+		while gravityProgress/256.0 >= 1:
 			if not activePiece.attempt_move_piece_down():
 				gravityProgress = 0
 				break
@@ -109,7 +108,9 @@ func process_lock_delay() -> void:
 		else:
 			lock_delay = -1
 		if activePiece:
-			var prog: float = 1-(max(lock_delay, 0.0)/float(Lookups.get_lock_delay(level)))
+			var prog: float = 0.0
+			if lock_delay != -1:
+				prog = 1-(max(lock_delay, 0.0)/float(Lookups.get_lock_delay(level)))
 			#print(prog)
 			for block: Block in activePiece.blockCollection:
 				block.set_lock_progress(prog)

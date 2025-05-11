@@ -8,7 +8,7 @@ var displaySection: int = 0
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 	
 func update_level_counter(level: int, section: int) -> void:

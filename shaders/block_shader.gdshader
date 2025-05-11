@@ -12,7 +12,7 @@ void vertex() {
 }
 
 void fragment() {
-	vec2 modUV = mod(UV/vec2(1.3333333,2.0), 0.25);
+	vec2 modUV = mod(UV/vec2(4.0/3.0,2.0), 0.25);
 	float xColorOff = mod(float(blockColorId), 4.0)/4.0;
 	float yColorOff = floor(float(blockColorId)/4.0)/4.0;
 	ALBEDO.xyz = texture(albedo, modUV + vec2(xColorOff, yColorOff)).xyz;

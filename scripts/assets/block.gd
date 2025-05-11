@@ -16,9 +16,10 @@ var boardPos: Vector2i
 var blockColor: Color
 var blockColorId: int
 var placed: bool = false
+var lockProgress: float = 0.0
 
 func _ready() -> void:
-	pass
+	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
 
 func set_block_color(color: Color) -> void:
 	blockColor = color
@@ -32,12 +33,12 @@ func set_placed(placedState: bool) -> void:
 	self.placed = placedState
 	%BlockMesh.set_instance_shader_parameter("placed", placedState)
 
-func set_lock_progress(lockProgress: float) -> void:
-	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
+func set_lock_progress(lockProg: float) -> void:
+	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProg)
 
 func move_to_board_pos() -> void:
 	position = Vector3(boardPos.x, -boardPos.y, 0)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if get_parent().get_parent() is PlayBoard:
 		move_to_board_pos()

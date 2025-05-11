@@ -90,7 +90,6 @@ func set_piece_to_board(piece: Piece) -> void:
 		block.set_placed(true)
 	
 	linesToClear = get_full_line_inds()
-	print(linesToClear)
 	if linesToClear.size() != 0:
 		clear_blocks_on_rows(linesToClear)
 		%BoardGameState.set_are_line_delay()
@@ -106,3 +105,14 @@ func set_piece_to_board(piece: Piece) -> void:
 	piece.get_parent().remove_child(piece)
 	
 	#queue_free()
+
+func special_rotation_check(location: Vector2i) -> bool:
+	for rowi: int in range(3):
+		for coli: int in range(3):
+			var gridFoc: Vector2i = location + Vector2i(coli, rowi)
+			if blockBoard[gridFoc.y-1][gridFoc.x] != null:
+				if coli == 1:
+					return false
+				else:
+					return true
+	return true

@@ -6,7 +6,7 @@ var blockExplosionScene: PackedScene = preload("res://assets/block/block_explosi
 func _ready() -> void:
 	pass
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func add_explosion(pos: Vector2, color: Color) -> void:
@@ -16,7 +16,6 @@ func add_explosion(pos: Vector2, color: Color) -> void:
 	
 	blockExplosion.position = Vector3(pos.x, -pos.y+1, 0)
 	particleObj.emitting = true
-	print(color.to_html())
 	particleObj.process_material = particleObj.process_material.duplicate()
 	particleObj.process_material.color = color
 	#particleObj.process_material.emission = color

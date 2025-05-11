@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://dkuvan7ic0hh2"]
+[gd_resource type="Resource" script_class="PieceLookups" load_steps=2 format=3 uid="uid://dkuvan7ic0hh2"]
 
 [ext_resource type="Script" uid="uid://dcim478dnk3n3" path="res://scripts/piecelookups.gd" id="1_s6h11"]
 
