@@ -1,10 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://cog7i2odhyfdd"]
+[gd_scene load_steps=10 format=3 uid="uid://cog7i2odhyfdd"]
 
 [ext_resource type="Script" uid="uid://bnjhyrcxvbrns" path="res://scripts/assets/block.gd" id="1_01uos"]
 [ext_resource type="Material" uid="uid://bm85dn1jhke2r" path="res://shaders/block_material.tres" id="2_bwmav"]
+[ext_resource type="Shader" uid="uid://clhn1nrv40pta" path="res://shaders/block_outline.gdshader" id="3_wtxr1"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_hfsdp"]
 material = ExtResource("2_bwmav")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p57g7"]
+render_priority = 0
+shader = ExtResource("3_wtxr1")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_rohi0"]
+material = SubResource("ShaderMaterial_p57g7")
+size = Vector2(1, 0.125)
+center_offset = Vector3(0.5, -0.062, 0.501)
+orientation = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wf66m"]
+material = SubResource("ShaderMaterial_p57g7")
+size = Vector2(0.125, 1)
+center_offset = Vector3(0.937, -0.5, 0.501)
+orientation = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_fc3gi"]
+material = SubResource("ShaderMaterial_p57g7")
+size = Vector2(1, 0.125)
+center_offset = Vector3(0.5, -0.937, 0.501)
+orientation = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xpsld"]
+material = SubResource("ShaderMaterial_p57g7")
+size = Vector2(0.125, 1)
+center_offset = Vector3(0.063, -0.5, 0.501)
+orientation = 2
 
 [node name="Block" type="Node3D"]
 script = ExtResource("1_01uos")
@@ -13,3 +42,27 @@ script = ExtResource("1_01uos")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
 mesh = SubResource("BoxMesh_hfsdp")
+
+[node name="BlockOutLines" type="Node3D" parent="."]
+unique_name_in_owner = true
+visible = false
+
+[node name="BlockOutlineN" type="MeshInstance3D" parent="BlockOutLines"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PlaneMesh_rohi0")
+
+[node name="BlockOutlineE" type="MeshInstance3D" parent="BlockOutLines"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PlaneMesh_wf66m")
+
+[node name="BlockOutlineS" type="MeshInstance3D" parent="BlockOutLines"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PlaneMesh_fc3gi")
+
+[node name="BlockOutlineW" type="MeshInstance3D" parent="BlockOutLines"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("PlaneMesh_xpsld")

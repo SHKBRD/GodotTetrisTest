@@ -36,6 +36,26 @@ func set_placed(placedState: bool) -> void:
 func set_lock_progress(lockProg: float) -> void:
 	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProg)
 
+func update_outline(dirs: Array[Vector2i]) -> void:
+	print(dirs)
+	if dirs.size() == 0:
+		%BlockOutLines.hide()
+	else:
+		%BlockOutLines.show()
+		%BlockOutlineN.hide()
+		%BlockOutlineE.hide()
+		%BlockOutlineS.hide()
+		%BlockOutlineW.hide()
+		if Vector2i.UP in dirs:
+			%BlockOutlineN.show()
+		if Vector2i.RIGHT in dirs:
+			%BlockOutlineE.show()
+		if Vector2i.DOWN in dirs:
+			%BlockOutlineS.show()
+		if Vector2i.LEFT in dirs:
+			%BlockOutlineW.show()
+			
+
 func move_to_board_pos() -> void:
 	position = Vector3(boardPos.x, -boardPos.y, 0)
 

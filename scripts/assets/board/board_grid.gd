@@ -75,6 +75,8 @@ func drop_blocks_to_floor() -> void:
 			var referenceBlock: Block = blockBoard[rowi][coli]
 			if blockBoard[rowi][coli] != null:
 				referenceBlock.boardPos = Vector2i(coli, rowi+1)
+	
+	update_block_outlines()
 
 func set_piece_to_board(piece: Piece) -> void:
 	for block: Block in piece.blockCollection:
@@ -106,6 +108,8 @@ func set_piece_to_board(piece: Piece) -> void:
 	piece.get_parent().remove_child(piece)
 	piece.queue_free()
 	
+	update_block_outlines()
+	
 	#queue_free()
 
 func special_rotation_check(location: Vector2i) -> bool:
@@ -118,3 +122,24 @@ func special_rotation_check(location: Vector2i) -> bool:
 				else:
 					return true
 	return true
+
+func update_block_outline(block: Block, row: int, col: int) -> void:
+	if block == null: return
+	var dirList: Array[Vector2i] = []
+	for rowi: int in range(-1, 2):
+		for coli: int in range(-1, 2):
+			if abs(rowi+coli) % 2 == 0: continue
+			var frow: int = rowi+row
+			var fcol: int = coli+col
+			if frow < 0 or fcol < 0 or frow >= boardSizey or fcol >= boardSizex: continue
+			var fBlock: Block = blockBoard[frow][fcol]
+			# if spot on board is empty or if block is no longet in scene tree
+			if fBlock == null or fBlock.get_parent()==null:
+				dirList.append(Vector2i(coli,rowi))
+	block.update_outline(dirList)
+
+func update_block_outlines() -> void:
+	for rowi: int in boardSizey:
+		for coli: int in boardSizex:
+			update_block_outline(blockBoard[rowi][coli], rowi, coli)
+					
