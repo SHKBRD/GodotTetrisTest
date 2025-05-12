@@ -1,8 +1,6 @@
 extends Node
 class_name BoardGrid
 
-signal send_explosion(pos: Vector2, color: Color)
-
 var blockBoard : Array[Array]
 var linesToClear: Array[int] = []
 
@@ -79,6 +77,7 @@ func drop_blocks_to_floor() -> void:
 	update_block_outlines()
 
 func set_piece_to_board(piece: Piece) -> void:
+	# Block Transfer
 	for block: Block in piece.blockCollection:
 		var setPos: Vector3 = block.global_position
 		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)

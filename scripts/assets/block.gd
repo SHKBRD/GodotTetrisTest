@@ -30,14 +30,14 @@ func set_block_color_id(colorId: int) -> void:
 	%BlockMesh.set_instance_shader_parameter("blockColorId", colorIdToTextureInd[blockColorId])
 
 func set_placed(placedState: bool) -> void:
-	self.placed = placedState
+	placed = placedState
 	%BlockMesh.set_instance_shader_parameter("placed", placedState)
 
 func set_lock_progress(lockProg: float) -> void:
 	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProg)
 
 func update_outline(dirs: Array[Vector2i]) -> void:
-	print(dirs)
+	#print(dirs)
 	if dirs.size() == 0:
 		%BlockOutLines.hide()
 	else:

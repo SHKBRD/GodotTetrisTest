@@ -97,30 +97,27 @@ func attempt_rotate_piece(dir: int) -> void:
 			return
 		
 	
-	var testPiece: Piece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x, boardPos.y))
-	if not belongBoard.is_piece_overlapping(testPiece):
-		transfer_test_piece_data(testPiece)
-		testPiece.queue_free()
+	if check_apply_rotation(newRotId, 0):
 		return
 	
 	# attempt wallkicks
 	if blockId != 6:
-		testPiece.queue_free()
-		testPiece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x+1, boardPos.y))
-		if not belongBoard.is_piece_overlapping(testPiece):
-			transfer_test_piece_data(testPiece)
-			testPiece.queue_free()
+		if check_apply_rotation(newRotId, 1):
 			return
 		
-		testPiece.queue_free()
-		testPiece = make_piece(belongBoard, blockId, newRotId, Vector2i(boardPos.x-1, boardPos.y))
-		if not belongBoard.is_piece_overlapping(testPiece):
-			transfer_test_piece_data(testPiece)
-			testPiece.queue_free()
+		if check_apply_rotation(newRotId, -1):
 			return
 	
-	testPiece.queue_free()
-	
+
+func check_apply_rotation(rot: int, dir: int) -> bool:
+	var testPiece: Piece = make_piece(belongBoard, blockId, rot, Vector2i(boardPos.x+dir, boardPos.y))
+	if not belongBoard.is_piece_overlapping(testPiece):
+		transfer_test_piece_data(testPiece)
+		testPiece.queue_free()
+		return true
+	else:
+		testPiece.queue_free()
+		return false
 
 
 func transfer_test_piece_data(testPiece: Piece) -> void:
