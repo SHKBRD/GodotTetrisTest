@@ -4,7 +4,7 @@ render_mode unshaded;
 
 uniform sampler2D albedo : filter_nearest_mipmap_anisotropic;
 instance uniform int blockColorId;
-instance uniform bool placed;
+//instance uniform bool placed;
 instance uniform float lockProgress;
 
 void vertex() {
@@ -17,7 +17,7 @@ void fragment() {
 	float yColorOff = floor(float(blockColorId)/4.0)/4.0;
 	ALBEDO.xyz = texture(albedo, modUV + vec2(xColorOff, yColorOff)).xyz;
 	//ALBEDO *= blockColor.xyz;
-	if (placed) {
+	if (lockProgress == 1.0) {
 		ALBEDO /= 2.0;
 	} else {
 		ALBEDO /= (1.0 + lockProgress);

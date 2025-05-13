@@ -19,22 +19,38 @@ var placed: bool = false
 var lockProgress: float = 0.0
 
 func _ready() -> void:
-	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
+	pass
+	#%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
 
 func set_block_color(color: Color) -> void:
 	blockColor = color
-	%BlockMesh.set_instance_shader_parameter("blockColor", color)
+	#%BlockMesh.set_instance_shader_parameter("blockColor", color)
 
 func set_block_color_id(colorId: int) -> void:
 	blockColorId = colorId
-	%BlockMesh.set_instance_shader_parameter("blockColorId", colorIdToTextureInd[blockColorId])
+	#%BlockMesh.set_instance_shader_parameter("blockColorId", colorIdToTextureInd[blockColorId])
 
 func set_placed(placedState: bool) -> void:
-	placed = placedState
-	%BlockMesh.set_instance_shader_parameter("placed", placedState)
+	if placedState == true:
+		lockProgress = 1.0
+	#%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
 
 func set_lock_progress(lockProg: float) -> void:
-	%BlockMesh.set_instance_shader_parameter("lockProgress", lockProg)
+	lockProgress = lockProg
+	%BlockMesh.get_surface_override_material(0).set_shader_parameter("lock_progress", lockProgress)
+	#%BlockMesh.set_instance_shader_parameter("lockProgress", lockProgress)
+
+func set_block_material(mat: ShaderMaterial) -> void:
+	#var pastMat: ShaderMaterial = %BlockMesh.get_surface_override_material(0)
+	#if pastMat: pastMat.queue_free()
+	var newMat: ShaderMaterial = mat.duplicate()
+	var targetColorId: int = colorIdToTextureInd[blockColorId]
+	var uvXOff: float = (targetColorId%4)/4.0
+	var uvYOff: float = int(targetColorId/4.0)/4.0
+	newMat.set_shader_parameter("uv1_offset", Vector3(uvXOff, uvYOff, 0.0))
+	#print(newMat.get_shader_parameter("lock_progress"))
+	newMat.set_shader_parameter("lock_progress", lockProgress)
+	%BlockMesh.set_surface_override_material(0, newMat)
 
 func update_outline(dirs: Array[Vector2i]) -> void:
 	#print(dirs)

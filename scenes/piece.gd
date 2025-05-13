@@ -5,6 +5,7 @@ static var blockScene: Resource = preload("res://scenes/Block.tscn")
 static var pieceScene: Resource = preload("res://scenes/Piece.tscn")
 static var pieceLookup: Resource = preload("res://scripts/pieceblocks.tres")
 
+
 var pieceBlocks: Node3D
 
 var belongBoard: PlayBoard
@@ -47,6 +48,7 @@ static func make_piece(board: PlayBoard, pieceId: int, rotId: int = 0, initBoard
 		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
 		pieceBlock.set_block_color_id(pieceId)
 		piece.get_node("PieceBlocks").add_child(pieceBlock)
+		pieceBlock.set_block_material(board.block_mat)
 	
 	return piece
 
@@ -131,6 +133,7 @@ func transfer_test_piece_data(testPiece: Piece) -> void:
 	for n: Block in testPiece.blockCollection:
 		testPiece.get_node("PieceBlocks").remove_child(n)
 		pieceBlocks.add_child(n)
+		n.set_block_material(belongBoard.locking_block_mat)
 
 func _process(_delta: float) -> void:
 	position = Vector3(boardPos.x, -boardPos.y, 0)

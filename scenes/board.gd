@@ -1,6 +1,10 @@
 extends Node3D
 class_name PlayBoard
 
+@onready var block_mat: ShaderMaterial = preload("res://scenes/materials/block.tres")
+@onready var locking_block_mat: ShaderMaterial = preload("res://scenes/materials/lockingBlock.tres")
+@onready var locked_block_mat: ShaderMaterial = preload("res://scenes/materials/lockedBlock.tres")
+
 	
 func _ready() -> void:
 	pass

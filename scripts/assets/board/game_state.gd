@@ -155,6 +155,10 @@ func add_piece() -> void:
 			newPiece.queue_free()
 			game_over_init.emit()
 			return
+		
+	for block: Block in newPiece.blockCollection:
+		block.set_block_material(newPiece.belongBoard.locking_block_mat)
+		
 	%Pieces.add_child(newPiece)
 	activePiece = newPiece
 	gravityProgress = 0

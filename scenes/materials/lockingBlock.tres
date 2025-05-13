@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://imeuecc7dhfh"]
+
+[ext_resource type="Shader" uid="uid://dpsnyg0b0y36g" path="res://shaders/piece_progress_block_shader.gdshader" id="1_eaaiu"]
+[ext_resource type="Texture2D" uid="uid://633v4i8vmm6k" path="res://assets/block/block.bmp" id="2_s1kh2"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_eaaiu")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("2_s1kh2")
+shader_parameter/albedo_texture_size = Vector2i(64, 64)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/lock_progress = 0.0

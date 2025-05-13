@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cog7i2odhyfdd"]
+[gd_scene load_steps=11 format=3 uid="uid://cog7i2odhyfdd"]
 
 [ext_resource type="Script" uid="uid://bnjhyrcxvbrns" path="res://scripts/assets/block.gd" id="1_01uos"]
-[ext_resource type="Material" uid="uid://bm85dn1jhke2r" path="res://shaders/block_material.tres" id="2_bwmav"]
+[ext_resource type="ArrayMesh" uid="uid://cawktfum6ka1m" path="res://assets/block/blockMesh.tres" id="2_xpsld"]
 [ext_resource type="Shader" uid="uid://clhn1nrv40pta" path="res://shaders/block_outline.gdshader" id="3_wtxr1"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_hfsdp"]
-material = ExtResource("2_bwmav")
+[ext_resource type="PackedScene" uid="uid://rek2r0rg3lvd" path="res://assets/block/block.blend" id="4_p57g7"]
+[ext_resource type="Material" uid="uid://bd1xivxfq7a4w" path="res://scenes/materials/lockedBlock.tres" id="5_xpsld"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_p57g7"]
 render_priority = 0
@@ -40,8 +39,7 @@ script = ExtResource("1_01uos")
 
 [node name="BlockMesh" type="MeshInstance3D" parent="."]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
-mesh = SubResource("BoxMesh_hfsdp")
+mesh = ExtResource("2_xpsld")
 
 [node name="BlockOutLines" type="Node3D" parent="."]
 unique_name_in_owner = true
@@ -66,3 +64,11 @@ mesh = SubResource("PlaneMesh_fc3gi")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("PlaneMesh_xpsld")
+
+[node name="block" parent="." instance=ExtResource("4_p57g7")]
+visible = false
+
+[node name="Cube" parent="block" index="0"]
+surface_material_override/0 = ExtResource("5_xpsld")
+
+[editable path="block"]
