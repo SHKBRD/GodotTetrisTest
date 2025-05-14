@@ -139,7 +139,7 @@ func special_rotation_check(location: Vector2i) -> bool:
 	return true
 
 ## Updates/Displays the outline of a given block. 
-func update_block_outline(block: Block, row: int, col: int) -> void:
+func update_block_outline(block: Block) -> void:
 	if block == null: return
 	var dirList: Array[Vector2i] = []
 	for rowi: int in range(-1, 2):
@@ -158,5 +158,5 @@ func update_block_outline(block: Block, row: int, col: int) -> void:
 func update_block_outlines() -> void:
 	for rowi: int in boardSizey:
 		for coli: int in boardSizex:
-			update_block_outline(blockBoard[rowi][coli], rowi, coli)
+			update_block_outline(blockBoard[rowi][coli])
 					
