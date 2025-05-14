@@ -1,13 +1,20 @@
 extends Node3D
 class_name Piece
+## Represents a piece comprised of [Block]s.
 
+## Instance default block scene.
 static var blockScene: Resource = preload("res://scenes/Block.tscn")
+
+## Instance default piece scene.
 static var pieceScene: Resource = preload("res://scenes/Piece.tscn")
+
+## Instance scene for piece shapes.
 static var pieceLookup: Resource = preload("res://scripts/pieceblocks.tres")
 
-
+## Reference to the container of blocks that comprise the piece.
 var pieceBlocks: Node3D
 
+## Reference to the board that the piece is a part of.
 var belongBoard: PlayBoard
 var blockCollection: Array[Block]
 

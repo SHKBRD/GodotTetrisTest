@@ -26,7 +26,7 @@ func init_play() -> void:
 	%BoardGameState.board_game_state_init()
 
 ## Main overhead processing loop.
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("reset_board"):
 		print_orphan_nodes()
 		board_reset()

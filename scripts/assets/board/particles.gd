@@ -1,6 +1,8 @@
 extends Node
 class_name BoardParticleHandling
+## Processes the particles present in a [PlayBoard]
 
+## Prepared instance of the block explosion.
 var blockExplosionScene: PackedScene = preload("res://assets/block/block_explosion.tscn")
 
 func _ready() -> void:
@@ -9,6 +11,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 
+## Instances a [BlockExplosion] into the position on the grid of the [PlayBoard] with [param pos]
 func add_explosion(pos: Vector2, color: Color) -> void:
 	var blockExplosion: BlockExplosion = blockExplosionScene.instantiate()
 	var particleObj: GPUParticles3D = blockExplosion.get_node("ExplosionParticles")
@@ -23,7 +26,8 @@ func add_explosion(pos: Vector2, color: Color) -> void:
 	#particleObj.material_override.emission = color
 	%Particles.add_child(blockExplosion)
 	
-	
+
+## Removes an explosion given a provided [BlockExplosion], then queues it free.
 func on_explosion_expired(blockExplosion: BlockExplosion) -> void:
 	%Particles.remove_child(blockExplosion)
 	blockExplosion.queue_free()

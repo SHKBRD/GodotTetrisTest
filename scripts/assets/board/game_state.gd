@@ -58,7 +58,7 @@ var maxLevel: int = 999
 func _ready() -> void:
 	pass
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	process_counters()
 
 ## Resets core game state variables, prepares next piece and active piece.

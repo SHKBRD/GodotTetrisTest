@@ -2,14 +2,15 @@
 
 [ext_resource type="Texture2D" uid="uid://d0wlvptey7yua" path="res://assets/block/textures/block.bmp" id="1_0on6o"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0on6o"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7xhbv"]
 resource_name = "Material"
+transparency = 4
 albedo_color = Color(0, 0, 0, 1)
 metallic = 1.0
 emission_enabled = true
 emission_texture = ExtResource("1_0on6o")
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_7xhbv"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_ubw4w"]
 _surfaces = [{
 "aabb": AABB(0, 0, -0.5, 1, 1, 1),
 "format": 34896613377,
@@ -31,7 +32,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 36,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAFAAYABAAHAAUACAAJAAoACAALAAkADAANAA4ADAAPAA0AEAARABIAEAATABEAFAAVABYAFAAXABUA"),
-"material": SubResource("StandardMaterial3D_0on6o"),
+"material": SubResource("StandardMaterial3D_7xhbv"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0.5, 0.5, 0, 0),
@@ -39,4 +40,4 @@ _surfaces = [{
 "vertex_data": PackedByteArray("/////wAA/78AAP//////vwAA//8AAP+//////////7///wAA//8AgAAA/////wCA////////AIAAAAAA//8AgAAAAAD///+/AAD//wAA/78AAP//////vwAAAAAAAP+/AAAAAAAA/7///wAA////v///AAAAAP+/AAAAAP///7///wAAAAD/v/////////+//////wAA/7///wAA////vwAAAAAAAP///////wAA//8AAP//AAD/////AAAAAP//////f////3////9/////f/9/////f////3////9/////f////3////9/////f///AAD/fwAA/38AAP9/AAD/f/9/AAD/fwAA/38AAP9/AAD/f////3////9/////f///")
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_7xhbv")
+shadow_mesh = SubResource("ArrayMesh_ubw4w")
