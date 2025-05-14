@@ -1,8 +1,14 @@
 extends Node3D
 class_name PlayBoard
+## Contains overall board processes across a single playing game instance.
 
+## Instance default block material for current board.
 @onready var block_mat: ShaderMaterial = preload("res://scenes/materials/block.tres")
+
+## Instance piece material for current board.
 @onready var locking_block_mat: ShaderMaterial = preload("res://scenes/materials/lockingBlock.tres")
+
+## Instance locked block material for current board.
 @onready var locked_block_mat: ShaderMaterial = preload("res://scenes/materials/lockedBlock.tres")
 
 	
@@ -14,16 +20,19 @@ func _ready() -> void:
 	#generate_next_piece(true)
 	#add_piece()
 
+## Initializes board, calls initialization methods on subnodes.
 func init_play() -> void:
 	%BoardGrid.block_board_init()
 	%BoardGameState.board_game_state_init()
 
+## Main overhead processing loop.
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("reset_board"):
 		print_orphan_nodes()
 		board_reset()
 		init_play()
 
+## Queues all playfield nodes free, removes game data that persists through subnodes.
 func board_reset() -> void:
 	for child: Piece in %Pieces.get_children():
 		%Pieces.remove_child(child)
@@ -41,8 +50,11 @@ func board_reset() -> void:
 	
 
 # easy access methods
+
+## Easy access method for overlapping [Piece] checks.
 func is_piece_overlapping(piece: Piece) -> bool:
 	return %BoardGrid.is_piece_overlapping(piece)
 
+## Easy access method for special [Piece] rotation checks.
 func special_rotation_check(location: Vector2i) -> bool:
 	return %BoardGrid.special_rotation_check(location)

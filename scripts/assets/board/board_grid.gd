@@ -89,7 +89,7 @@ func set_piece_to_board(piece: Piece) -> void:
 			checkBlock.free()
 		blockBoard[block.boardPos.y-1][block.boardPos.x] = block
 		block.global_position = setPos
-		block.set_placed(true)
+		block.set_placed()
 		block.set_block_material(piece.belongBoard.locked_block_mat)
 	
 	linesToClear = get_full_line_inds()

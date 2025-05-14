@@ -44,11 +44,10 @@ static func make_piece(board: PlayBoard, pieceId: int, rotId: int = 0, initBoard
 		pieceBlock.boardPos = piece.boardPos+blockPos
 		pieceBlock.position = Vector3(blockPos.x, -blockPos.y, 0)
 		piece.blockCollection.append(pieceBlock)
-		
-		pieceBlock.set_block_color(pieceLookup.blockColors[pieceId])
-		pieceBlock.set_block_color_id(pieceId)
-		piece.get_node("PieceBlocks").add_child(pieceBlock)
+		pieceBlock.blockColorId = pieceId
 		pieceBlock.set_block_material(board.block_mat)
+		piece.get_node("PieceBlocks").add_child(pieceBlock)
+		
 	
 	return piece
 
