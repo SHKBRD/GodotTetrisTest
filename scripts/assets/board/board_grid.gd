@@ -1,15 +1,23 @@
 extends Node
 class_name BoardGrid
+## Manages the internal grid used for [PlayBoard] interactions.
 
+## Storage grid of all [Block]s in the board's stack. Doesn't include blocks used in any of the [Piece]s that interact with the stack.
 var blockBoard : Array[Array]
+
+## Array of row indecies that are slated to be cleared.
 var linesToClear: Array[int] = []
 
+## Total width of the board in blocks.
 var boardSizex: int = 10
+
+## Total height of the board in blocks. Includes overhead that isn't visually contained by the board's border.
 var boardSizey: int = 22
 
 func _ready() -> void:
 	pass
 
+## Checks if the provided [param piece] overlaps with any present blocks in [member blockBoard].
 func is_piece_overlapping(piece: Piece) -> bool:
 	if piece.belongBoard == null:
 		return false
@@ -24,6 +32,7 @@ func is_piece_overlapping(piece: Piece) -> bool:
 			return true
 	return false
 
+## Initiates/Resets [member blockBoard], leaving a blockBoard entirely filled with null (empty) spaces.
 func block_board_init() -> void:
 	blockBoard = []
 	for rowi: int in range(boardSizey):
@@ -32,6 +41,7 @@ func block_board_init() -> void:
 			blockRow.append(null)
 		blockBoard.append(blockRow)
 
+## Returns all line indecies that are fully comprised of blocks.
 func get_full_line_inds() -> Array[int]:
 	var fullLineInds: Array[int] = []
 	for boardRowInd: int in range(blockBoard.size()):
@@ -43,6 +53,7 @@ func get_full_line_inds() -> Array[int]:
 		if isFull: fullLineInds.append(boardRowInd)
 	return fullLineInds
 
+## Removes all blocks that are in a given set of row indecies, removing them from the scene tree and adding block clearing particles.
 func clear_blocks_on_rows(fullLineInds: Array) -> void:
 	for rowInd: int in fullLineInds:
 		for block: Block in blockBoard[rowInd]:
@@ -51,6 +62,7 @@ func clear_blocks_on_rows(fullLineInds: Array) -> void:
 		%BoardGameState.increment_level(true)
 
 # deals with the position of the blocks after the initial ARE of putting down the line after a line clear
+## Removes rows from the [member blockBoard], updates positions of grid blocks post-clear.
 func drop_blocks_to_floor() -> void:
 	var rowsToAdd: int = 0
 	# clear out existing blocks, remove rows to drop pieces above
@@ -76,8 +88,9 @@ func drop_blocks_to_floor() -> void:
 	
 	update_block_outlines()
 
+## Transfers the blocks in a given [param piece] to the [member blockBoard] and the scene tree.
 func set_piece_to_board(piece: Piece) -> void:
-	# Block Transfer
+	# Block transfer to blockBoard
 	for block: Block in piece.blockCollection:
 		var setPos: Vector3 = block.global_position
 		#block.position = Vector3(block.boardPos.x, -block.boardPos.y,0)
@@ -92,6 +105,7 @@ func set_piece_to_board(piece: Piece) -> void:
 		block.set_placed()
 		block.set_block_material(piece.belongBoard.locked_block_mat)
 	
+	# branches on if board can clear once piece is set
 	linesToClear = get_full_line_inds()
 	if linesToClear.size() != 0:
 		clear_blocks_on_rows(linesToClear)
@@ -112,6 +126,7 @@ func set_piece_to_board(piece: Piece) -> void:
 	
 	#queue_free()
 
+## Returns if the piece is able to perform a rotation given TGM rules for rotating L, J or T pieces.
 func special_rotation_check(location: Vector2i) -> bool:
 	for rowi: int in range(3):
 		for coli: int in range(3):
@@ -123,14 +138,15 @@ func special_rotation_check(location: Vector2i) -> bool:
 					return true
 	return true
 
+## Updates/Displays the outline of a given block. 
 func update_block_outline(block: Block, row: int, col: int) -> void:
 	if block == null: return
 	var dirList: Array[Vector2i] = []
 	for rowi: int in range(-1, 2):
 		for coli: int in range(-1, 2):
 			if abs(rowi+coli) % 2 == 0: continue
-			var frow: int = rowi+row
-			var fcol: int = coli+col
+			var frow: int = rowi+block.boardPos.y-1
+			var fcol: int = coli+block.boardPos.x
 			if frow < 0 or fcol < 0 or frow >= boardSizey or fcol >= boardSizex: continue
 			var fBlock: Block = blockBoard[frow][fcol]
 			# if spot on board is empty or if block is no longet in scene tree
@@ -138,6 +154,7 @@ func update_block_outline(block: Block, row: int, col: int) -> void:
 				dirList.append(Vector2i(coli,rowi))
 	block.update_outline(dirList)
 
+## Updates/Displays the outlines of all blocks in the [member blockBoard].
 func update_block_outlines() -> void:
 	for rowi: int in boardSizey:
 		for coli: int in boardSizex:
