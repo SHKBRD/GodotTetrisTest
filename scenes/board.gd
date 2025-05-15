@@ -2,6 +2,8 @@ extends Node3D
 class_name PlayBoard
 ## Contains overall board processes across a single playing game instance.
 
+@export var gamemode: int = 0
+
 ## Instance default block material for current board.
 @onready var block_mat: ShaderMaterial = preload("res://scenes/materials/block.tres")
 

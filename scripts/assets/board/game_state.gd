@@ -14,6 +14,9 @@ const maxPieceIdHistory: int = 6
 ## Maximum amount of attempts to generate a piece that follows generation rules.
 const maxPieceGenerateTries: int = 6
 
+## Current gamemode.
+var gamemode: int = Gamemodes.Mode.DEFAULT
+
 ## Stores past generated piece types for piece randomization.
 var pieceIdHistory: Array[int] = []
 
@@ -97,11 +100,11 @@ func process_counters() -> void:
 
 ## Assigns [member areCounter] its line delay based off the current [member level].
 func set_are_line_delay() -> void:
-	areCounter = Lookups.get_line_are_delay(level)
+	areCounter = Lookups.get_line_are_delay(level, gamemode)
 
 ## Assigns [member areCounter] its delay based off the current [member level].
 func set_are_delay() -> void:
-	areCounter = Lookups.get_are_delay(level)
+	areCounter = Lookups.get_are_delay(level, gamemode)
 
 ## Processes [member areCounter] and initiates ARE ending actions
 ## if [member areCounter] counts down to 0.
@@ -119,7 +122,7 @@ func process_are_counter() -> void:
 func are_counter_done() -> void:
 	if %BoardGrid.linesToClear.size() != 0:
 		%BoardGrid.drop_blocks_to_floor()
-		lineClearAreCounter = Lookups.get_line_clear_are_delay(level)
+		lineClearAreCounter = Lookups.get_line_clear_are_delay(level, gamemode)
 	else:
 		add_piece()
 
@@ -136,7 +139,7 @@ func process_line_clear_are_counter() -> void:
 ## Processes the [member gravityProgress] counter using the current [member level].
 func process_gravity() -> void:
 	if activePiece != null:
-		gravityProgress += Lookups.get_gravity(level)
+		gravityProgress += Lookups.get_gravity(level, gamemode)
 		while gravityProgress/256.0 >= 1:
 			if not activePiece.attempt_move_piece_down():
 				gravityProgress = 0
@@ -156,7 +159,7 @@ func process_lock_delay() -> void:
 	if activePiece:
 		if not activePiece.can_move_down():
 			if lockDelay == -1:
-				lockDelay = Lookups.get_lock_delay(level)
+				lockDelay = Lookups.get_lock_delay(level, gamemode)
 			if lockDelay == 0:
 				%BoardGrid.set_piece_to_board(activePiece)
 				lockDelay = -1
@@ -172,7 +175,7 @@ func process_lock_delay() -> void:
 func update_piece_lock_progress(piece: Piece) -> void:
 	var prog: float = 0.0
 	if lockDelay != -1:
-		prog = 1-(max(lockDelay, 0.0)/float(Lookups.get_lock_delay(level)))
+		prog = 1-(max(lockDelay, 0.0)/float(Lookups.get_lock_delay(level, gamemode)))
 	#print(prog)
 	for block: Block in piece.blockCollection:
 		block.set_lock_progress(prog)

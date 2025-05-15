@@ -38,7 +38,7 @@ func handle_board_inputs() -> void:
 		
 
 func init_das(dir: int) -> void:
-	dasCounter = Lookups.get_das_delay(%Subs.get_node("BoardGameState").level)
+	dasCounter = Lookups.get_das_delay(%Subs.get_node("BoardGameState").level, %BoardGameState.gamemode)
 	#print(dasCounter)
 	var chosenPiece: Piece
 	if %Pieces.get_children().size() != 0:
