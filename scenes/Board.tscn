@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bso7vaxv8jtc4"]
+[gd_scene load_steps=14 format=3 uid="uid://bso7vaxv8jtc4"]
 
 [ext_resource type="Script" uid="uid://dr1fe0akrfeg2" path="res://scenes/board.gd" id="1_qails"]
 [ext_resource type="Script" uid="uid://dk5kd7u4k22g6" path="res://scripts/assets/board/das.gd" id="2_66b1s"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bxshngvavgqi4" path="res://scenes/LevelCounter.tscn" id="6_wlyqt"]
 [ext_resource type="Script" uid="uid://drbwloj7gu0f1" path="res://scripts/assets/board/particles.gd" id="6_wxh2q"]
 [ext_resource type="Shader" uid="uid://bhplnm0tew7y5" path="res://shaders/board_backing.gdshader" id="7_kqf1l"]
+[ext_resource type="PackedScene" uid="uid://b0o1luec5bae4" path="res://assets/board/BoardSelect.tscn" id="10_w8n1y"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hljw5"]
 render_priority = 0
@@ -17,6 +18,9 @@ shader = ExtResource("7_kqf1l")
 [sub_resource type="PlaneMesh" id="PlaneMesh_wxh2q"]
 material = SubResource("ShaderMaterial_hljw5")
 size = Vector2(10, 20)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gc1oq"]
+viewport_path = NodePath("SubViewport")
 
 [node name="Board" type="Node3D"]
 script = ExtResource("1_qails")
@@ -68,3 +72,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.01)
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, -10, -0.5)
 mesh = SubResource("PlaneMesh_wxh2q")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 8.7247, -13.9048, 1.96897)
+texture = SubResource("ViewportTexture_gc1oq")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="BoardSelect" parent="SubViewport" instance=ExtResource("10_w8n1y")]

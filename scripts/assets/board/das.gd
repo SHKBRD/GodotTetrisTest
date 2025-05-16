@@ -1,9 +1,10 @@
 extends Node
 class_name BoardInput
 
+
 var dasCounter: int = -1
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	process_das_inputs()
 	handle_board_inputs()
 

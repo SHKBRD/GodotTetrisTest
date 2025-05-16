@@ -15,7 +15,7 @@ const maxPieceIdHistory: int = 6
 const maxPieceGenerateTries: int = 6
 
 ## Current gamemode.
-var gamemode: int = Gamemodes.Mode.DEFAULT
+var gamemode: Gamemodes.Mode = Gamemodes.Mode.DEFAULT
 
 ## Stores past generated piece types for piece randomization.
 var pieceIdHistory: Array[int] = []

@@ -2,7 +2,7 @@ extends Node3D
 class_name PlayBoard
 ## Contains overall board processes across a single playing game instance.
 
-@export var gamemode: int = 0
+@export var gamemode: Gamemodes.Mode = Gamemodes.Mode.TADEATH
 
 ## Instance default block material for current board.
 @onready var block_mat: ShaderMaterial = preload("res://scenes/materials/block.tres")
@@ -26,6 +26,11 @@ func _ready() -> void:
 func init_play() -> void:
 	%BoardGrid.block_board_init()
 	%BoardGameState.board_game_state_init()
+	%BoardGameState.gamemode = gamemode
+
+func update_game_mode(gamemode: Gamemodes.Mode) -> void:
+	self.gamemode = gamemode
+	%BoardGameState.gamemode = gamemode
 
 ## Main overhead processing loop.
 func _physics_process(_delta: float) -> void:
