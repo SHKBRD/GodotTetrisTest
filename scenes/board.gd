@@ -35,9 +35,9 @@ func _on_ready_go_ready_go_end() -> void:
 	init_play()
 
 
-func update_game_mode(gamemode: Lookups.Gamemode) -> void:
-	self.gamemode = gamemode
-	%BoardGameState.gamemode = gamemode
+func update_game_mode(newGamemode: Lookups.Gamemode) -> void:
+	self.gamemode = newGamemode
+	%BoardGameState.gamemode = newGamemode
 
 func on_reset_board_button() -> void:
 	print_orphan_nodes()

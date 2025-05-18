@@ -7,7 +7,7 @@ func init_ready_go() -> void:
 	%ReadyGoTimer.start()
 	%AnimationPlayer.play("ReadyGoAnim")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	%ReadyProgress.value = %ReadyGoTimer.time_left / %ReadyGoTimer.wait_time
 
 func _on_ready_go_timer_timeout() -> void:
