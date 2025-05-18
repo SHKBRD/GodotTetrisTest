@@ -15,7 +15,7 @@ const maxPieceIdHistory: int = 6
 const maxPieceGenerateTries: int = 6
 
 ## Current gamemode.
-var gamemode: Gamemodes.Mode = Gamemodes.Mode.DEFAULT
+var gamemode: Lookups.Gamemode = Lookups.Gamemode.DEFAULT
 
 ## Stores past generated piece types for piece randomization.
 var pieceIdHistory: Array[int] = []
@@ -54,7 +54,7 @@ var section: int = 0
 var level: int = 0
 
 ## Maximum [member level] to be attained.
-var maxLevel: int = 999
+var maxLevel: int = Lookups.get_max_level(gamemode)
 
 
 

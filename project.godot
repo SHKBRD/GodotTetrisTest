@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Lookups="*res://scripts/lookups.gd"
-Gamemodes="*res://scripts/gamemodes.gd"
 
 [debug]
 

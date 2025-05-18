@@ -2,7 +2,7 @@ extends Node3D
 class_name PlayBoard
 ## Contains overall board processes across a single playing game instance.
 
-@export var gamemode: Gamemodes.Mode = Gamemodes.Mode.TADEATH
+@export var gamemode: Lookups.Gamemode = Lookups.Gamemode.TADEATH
 
 ## Instance default block material for current board.
 @onready var block_mat: ShaderMaterial = preload("res://scenes/materials/block.tres")
@@ -28,7 +28,7 @@ func init_play() -> void:
 	%BoardGameState.board_game_state_init()
 	%BoardGameState.gamemode = gamemode
 
-func update_game_mode(gamemode: Gamemodes.Mode) -> void:
+func update_game_mode(gamemode: Lookups.Gamemode) -> void:
 	self.gamemode = gamemode
 	%BoardGameState.gamemode = gamemode
 

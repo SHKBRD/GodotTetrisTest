@@ -24,6 +24,7 @@ viewport_path = NodePath("SubViewport")
 
 [node name="Board" type="Node3D"]
 script = ExtResource("1_qails")
+gamemode = 4
 
 [node name="BlockExplosion" parent="." instance=ExtResource("2_hljw5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -6, 0)
@@ -74,7 +75,9 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, -10
 mesh = SubResource("PlaneMesh_wxh2q")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 8.7247, -13.9048, 1.96897)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 8.7247, -13.9048, 0.506217)
+visible = false
+render_priority = 1
 texture = SubResource("ViewportTexture_gc1oq")
 
 [node name="SubViewport" type="SubViewport" parent="."]

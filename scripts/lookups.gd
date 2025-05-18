@@ -1,6 +1,25 @@
 extends Node
 
+enum Gamemode {
+	DEFAULT,
+	MASTER,
+	NORMAL,
+	TADEATH,
+	SHIRASE,
+	TWENTYG,
+	BIG
+}
+
+enum GamemodeFlags {
+	INSTANTGRAVITY,
+	BIG,
+	INFINITY
+}
+
 const defaultLookups: Dictionary = {
+	
+	"maxLevel" : 999,
+	
 	"areThresh" : [700, 800, 999],
 	"areVals" : [27, 18, 14],
 	"lineAreThresh" : [600, 700, 800, 999],
@@ -28,6 +47,9 @@ const defaultLookups: Dictionary = {
 		64 ,96 ,128,160,
 		192,224,256,512,
 		768,1024,1280,1024,768,5120
+	],
+	"flags" : [
+		
 	]
 }
 
@@ -40,6 +62,9 @@ const normalLookups: Dictionary = {
 }
 
 const tadeathLookups: Dictionary = {
+	
+	"maxLevel" : 999,
+	
 	"areThresh" : [0, 100, 300, 400, 500],
 	"areVals" : [18, 14, 8, 7, 6],
 	"lineAreThresh" : [0, 100, 400, 500],
@@ -55,11 +80,36 @@ const tadeathLookups: Dictionary = {
 	],
 	"gravVals" : [
 		5120
+	],
+	"flags" : [
+		GamemodeFlags.INSTANTGRAVITY
 	]
+	
 }
 
 const shiraseLookups: Dictionary = {
 	
+	"maxLevel" : 1300,
+	
+	"areThresh" : [0, 300],
+	"areVals" : [12, 6],
+	"lineAreThresh" : [0, 100, 200, 500, 1300],
+	"lineAreVals" : [8, 7, 6, 5, 6],
+	"dasThresh" : [0, 100, 500],
+	"dasVals" : [10, 8, 6],
+	"lockThresh" : [0, 200, 300, 500, 600, 1100, 1200, 1300],
+	"lockVals" : [18, 17, 15, 13, 12, 10, 8, 15],
+	"lineClearThresh" : [0, 100, 200, 500, 1300],
+	"lineClearVals" : [6, 5, 4, 3, 6],
+	"gravThresh" : [
+		0
+	],
+	"gravVals" : [
+		5120
+	],
+	"flags" : [
+		GamemodeFlags.INSTANTGRAVITY
+	]
 }
 
 const twentygLookups: Dictionary = {
@@ -71,36 +121,41 @@ const bigLookups: Dictionary = {
 }
 
 const gamemodeLookups: Dictionary[int, Dictionary] = {
-	Gamemodes.Mode.DEFAULT : defaultLookups,
-	Gamemodes.Mode.MASTER : masterLookups,
-	Gamemodes.Mode.NORMAL : normalLookups,
-	Gamemodes.Mode.TADEATH : tadeathLookups,
-	Gamemodes.Mode.SHIRASE : shiraseLookups,
-	Gamemodes.Mode.TWENTYG : twentygLookups,
-	Gamemodes.Mode.BIG : bigLookups,
+	Gamemode.DEFAULT : defaultLookups,
+	Gamemode.MASTER : masterLookups,
+	Gamemode.NORMAL : normalLookups,
+	Gamemode.TADEATH : tadeathLookups,
+	Gamemode.SHIRASE : shiraseLookups,
+	Gamemode.TWENTYG : twentygLookups,
+	Gamemode.BIG : bigLookups,
 } 
 
 # line are delay when no lines are cleared
-func get_are_delay(level: int, gamemode: int) -> int:
+func get_are_delay(level: int, gamemode: Gamemode) -> int:
 	return get_val_from_mode_table(level, "are", gamemode)
 
 # the initial line are delay used when a line is cleared, before pieces drop
-func get_line_are_delay(level: int, gamemode: int) -> int:
+func get_line_are_delay(level: int, gamemode: Gamemode) -> int:
 	return get_val_from_mode_table(level, "lineAre", gamemode)
 
 # the following line are delay used when a line is cleared, while pieces drop
-func get_line_clear_are_delay(level: int, gamemode: int) -> int:
+func get_line_clear_are_delay(level: int, gamemode: Gamemode) -> int:
 	return get_val_from_mode_table(level, "lineClear", gamemode)
 	
-func get_das_delay(level: int, gamemode: int) -> int:
+func get_das_delay(level: int, gamemode: Gamemode) -> int:
 	return get_val_from_mode_table(level, "das", gamemode)
 
-func get_gravity(level: int, gamemode: int) -> int:
+func get_gravity(level: int, gamemode: Gamemode) -> int:
+	# Move by 20 if instant gravity
+	if GamemodeFlags.INSTANTGRAVITY in gamemodeLookups[gamemode].get("flags"):
+		return 5120
 	return get_val_from_mode_table(level, "grav", gamemode)
 
-func get_lock_delay(level: int, gamemode: int) -> int:
+func get_lock_delay(level: int, gamemode: Gamemode) -> int:
 	return get_val_from_mode_table(level, "lock", gamemode)
 
+func get_max_level(gamemode: Gamemode) -> int:
+	return gamemodeLookups[gamemode]["maxLevel"]
 
 func get_val_from_mode_table(level: int, type: String, gamemode: int) -> int:
 	var gamemodeLookup: Dictionary = gamemodeLookups[gamemode]
@@ -109,8 +164,8 @@ func get_val_from_mode_table(level: int, type: String, gamemode: int) -> int:
 	if typeThresh.size()!=0 and typeVals.size()!=0 and typeThresh.size() == typeVals.size():
 		return get_val_from_table(level, typeThresh, typeVals)
 	else:
-		typeThresh = gamemodeLookups[Gamemodes.Mode.DEFAULT].get(type+"Thresh")
-		typeVals = gamemodeLookups[Gamemodes.Mode.DEFAULT].get(type+"Vals")
+		typeThresh = gamemodeLookups[Lookups.Gamemode.DEFAULT].get(type+"Thresh")
+		typeVals = gamemodeLookups[Lookups.Gamemode.DEFAULT].get(type+"Vals")
 		return get_val_from_table(level, typeThresh, typeVals)
 
 
