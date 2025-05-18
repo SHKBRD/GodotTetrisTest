@@ -74,7 +74,7 @@ func board_game_state_init() -> void:
 	section = int(level/100.0)
 	if activePiece != null:
 		activePiece.queue_free()
-	generate_next_piece(true)
+	#generate_next_piece(true)
 	add_piece()
 
 ## Increments [member level]. If [param clear] is enabled, [member section] can be passed if the current 

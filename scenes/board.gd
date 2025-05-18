@@ -24,20 +24,37 @@ func _ready() -> void:
 
 ## Initializes board, calls initialization methods on subnodes.
 func init_play() -> void:
+	for sub: Node in %Subs.get_children():
+		sub.set_physics_process(true)
+		sub.set_process(true)
 	%BoardGrid.block_board_init()
 	%BoardGameState.board_game_state_init()
 	%BoardGameState.gamemode = gamemode
+
+func _on_ready_go_ready_go_end() -> void:
+	init_play()
+
 
 func update_game_mode(gamemode: Lookups.Gamemode) -> void:
 	self.gamemode = gamemode
 	%BoardGameState.gamemode = gamemode
 
+func on_reset_board_button() -> void:
+	print_orphan_nodes()
+	board_reset()
+	update_game_mode(gamemode)
+	#init_play()
+	%BoardGameState.generate_next_piece(true)
+	for sub: Node in %Subs.get_children():
+		sub.set_physics_process(false)
+		sub.set_process(false)
+	%Subs.get_node("Input").set_physics_process(true)
+	%ReadyGo.init_ready_go()
+
 ## Main overhead processing loop.
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_just_pressed("reset_board"):
-		print_orphan_nodes()
-		board_reset()
-		init_play()
+		on_reset_board_button()
 
 ## Queues all playfield nodes free, removes game data that persists through subnodes.
 func board_reset() -> void:
