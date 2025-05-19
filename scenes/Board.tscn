@@ -78,18 +78,19 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 5, -10
 mesh = SubResource("PlaneMesh_wxh2q")
 
 [node name="BoardSelectSprite" type="Sprite3D" parent="."]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 8.7247, -13.9048, 0.506217)
-visible = false
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 5.0112, -9.9048, 0.506217)
 render_priority = 1
 texture = SubResource("ViewportTexture_gc1oq")
 
 [node name="ReadyGoSprite" type="Sprite3D" parent="."]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 9.32668, -13.9048, 0.506217)
+visible = false
 render_priority = 1
 texture = SubResource("ViewportTexture_338j4")
 
 [node name="BoardSelectSubViewport" type="SubViewport" parent="."]
 transparent_bg = true
+size = Vector2i(300, 512)
 
 [node name="BoardSelect" parent="BoardSelectSubViewport" instance=ExtResource("10_w8n1y")]
 

@@ -1,6 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0o1luec5bae4"]
+[gd_scene load_steps=5 format=3 uid="uid://b0o1luec5bae4"]
 
-[ext_resource type="PackedScene" uid="uid://0hpwlvxps576" path="res://assets/board/BoardSelectGamemodeSelection.tscn" id="1_vdcch"]
+[ext_resource type="Script" uid="uid://bsgfs7klqypbw" path="res://scripts/assets/board/board_select.gd" id="1_k4m0f"]
+
+[sub_resource type="Theme" id="Theme_vdcch"]
+default_font_size = 35
+Label/colors/font_color = Color(0.38, 0.834667, 1, 1)
+Label/constants/outline_size = 11
 
 [sub_resource type="Gradient" id="Gradient_ewl25"]
 offsets = PackedFloat32Array(0.05, 0.4, 0.6, 0.95)
@@ -15,31 +20,49 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_k4m0f")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-clip_children = 1
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 0
-offset_right = 265.0
-offset_bottom = 518.0
+offset_right = 295.0
+offset_bottom = 382.0
+alignment = 1
+
+[node name="SelectMode" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_vdcch")
+text = "SELECT MODE"
+horizontal_alignment = 1
+
+[node name="GamemodeContainer" type="CenterContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 500)
+layout_mode = 2
+
+[node name="GamemodeListAlphaClip" type="TextureRect" parent="VBoxContainer/GamemodeContainer"]
+clip_children = 1
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 2
 texture = SubResource("GradientTexture2D_vdcch")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+[node name="GamemodeList" type="VBoxContainer" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 0
-offset_right = 273.0
+offset_right = 300.0
 offset_bottom = 291.0
 alignment = 1
 
-[node name="Label" parent="TextureRect/VBoxContainer" instance=ExtResource("1_vdcch")]
+[node name="Label" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip/GamemodeList" instance_placeholder="res://assets/board/BoardSelectGamemodeSelection.tscn"]
 layout_mode = 2
 
-[node name="Label2" parent="TextureRect/VBoxContainer" instance=ExtResource("1_vdcch")]
+[node name="Label2" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip/GamemodeList" instance_placeholder="res://assets/board/BoardSelectGamemodeSelection.tscn"]
 layout_mode = 2
 
-[node name="Label3" parent="TextureRect/VBoxContainer" instance=ExtResource("1_vdcch")]
+[node name="Label3" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip/GamemodeList" instance_placeholder="res://assets/board/BoardSelectGamemodeSelection.tscn"]
 layout_mode = 2
 
-[node name="Label4" parent="TextureRect/VBoxContainer" instance=ExtResource("1_vdcch")]
+[node name="Label4" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip/GamemodeList" instance_placeholder="res://assets/board/BoardSelectGamemodeSelection.tscn"]
 layout_mode = 2
 
-[node name="Label5" parent="TextureRect/VBoxContainer" instance=ExtResource("1_vdcch")]
+[node name="Label5" parent="VBoxContainer/GamemodeContainer/GamemodeListAlphaClip/GamemodeList" instance_placeholder="res://assets/board/BoardSelectGamemodeSelection.tscn"]
 layout_mode = 2

@@ -10,6 +10,8 @@ enum Gamemode {
 	BIG
 }
 
+
+
 enum GamemodeFlags {
 	INSTANTGRAVITY,
 	BIG,
@@ -17,6 +19,8 @@ enum GamemodeFlags {
 }
 
 const defaultLookups: Dictionary = {
+	
+	"modeName" : "Base",
 	
 	"maxLevel" : 999,
 	
@@ -54,14 +58,16 @@ const defaultLookups: Dictionary = {
 }
 
 const masterLookups: Dictionary = {
-	
+	"modeName" : "Master",
 }
 
 const normalLookups: Dictionary = {
-	
+	"modeName" : "Normal",
 }
 
 const tadeathLookups: Dictionary = {
+	
+	"modeName" : "T.A. Death",
 	
 	"maxLevel" : 999,
 	
@@ -89,6 +95,8 @@ const tadeathLookups: Dictionary = {
 
 const shiraseLookups: Dictionary = {
 	
+	"modeName" : "Shirase",
+	
 	"maxLevel" : 1300,
 	
 	"areThresh" : [0, 300],
@@ -113,14 +121,14 @@ const shiraseLookups: Dictionary = {
 }
 
 const twentygLookups: Dictionary = {
-	
+	"modeName" : "20G",
 }
 
 const bigLookups: Dictionary = {
-	
+	"modeName" : "Big",
 }
 
-const gamemodeLookups: Dictionary[int, Dictionary] = {
+const gamemodeLookups: Dictionary[Gamemode, Dictionary] = {
 	Gamemode.DEFAULT : defaultLookups,
 	Gamemode.MASTER : masterLookups,
 	Gamemode.NORMAL : normalLookups,

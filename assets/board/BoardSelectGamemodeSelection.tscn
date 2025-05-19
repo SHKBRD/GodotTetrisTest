@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://bepjtk5e7hbdp" path="res://assets/board/MenuItemTheme.tres" id="1_dcdo3"]
 
-[node name="Label" type="Label"]
+[node name="Gamemode" type="Label"]
 theme = ExtResource("1_dcdo3")
 text = "Lmao"
 horizontal_alignment = 1
